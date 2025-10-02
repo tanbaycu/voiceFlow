@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Primary Meta Tags -->
+<title>Tuấn Taxi | Dịch vụ Taxi Miền Tây Giá Rẻ - Taxi Xanh Cái Bè</title>
+<meta name="title" content="Tuấn Taxi | Dịch vụ Taxi Miền Tây Giá Rẻ - Taxi Xanh Cái Bè">
+<meta name="description" content="Dịch vụ taxi giá rẻ Sài Gòn - Miền Tây, taxi liên tỉnh uy tín. Tuấn Taxi (Taxi Xanh Cái Bè) phục vụ 24/7, đặt xe nhanh chóng, giá cả minh bạch. Hotline: 0365942478">
+<meta name="keywords" content="taxi giá rẻ, taxi miền tây, tuấn taxi, taxi liên tỉnh, taxi xanh giá rẻ, taxi xanh cái bè, taxi sài gòn miền tây, taxi một chiều">
+<meta name="author" content="Tuấn Taxi">
+<meta name="robots" content="index, follow">
+<meta name="language" content="Vietnamese">
+<meta name="revisit-after" content="1 days">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tuantaxi.vercel.app">
+<meta property="og:title" content="Tuấn Taxi | Dịch vụ Taxi Miền Tây Giá Rẻ - Taxi Xanh Cái Bè">
+<meta property="og:description" content="Dịch vụ taxi giá rẻ Sài Gòn - Miền Tây, taxi liên tỉnh uy tín. Tuấn Taxi (Taxi Xanh Cái Bè) phục vụ 24/7, đặt xe nhanh chóng, giá cả minh bạch. Hotline: 0365942478">
+<meta property="og:image" content="https://i.postimg.cc/Jn5fjMdN/Thi-t-k-ch-a-c-t-n.jpg">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://tuantaxi.vercel.app">
+<meta property="twitter:title" content="Tuấn Taxi | Dịch vụ Taxi Miền Tây Giá Rẻ - Taxi Xanh Cái Bè">
+<meta property="twitter:description" content="Dịch vụ taxi giá rẻ Sài Gòn - Miền Tây, taxi liên tỉnh uy tín. Tuấn Taxi (Taxi Xanh Cái Bè) phục vụ 24/7, đặt xe nhanh chóng, giá cả minh bạch. Hotline: 0365942478">
+<meta property="twitter:image" content="https://i.postimg.cc/Jn5fjMdN/Thi-t-k-ch-a-c-t-n.jpg">
+
+<!-- Canonical URL -->
+<meta rel="canonical" href="https://tuantaxi.vercel.app">
+
+<!-- Geo Tags -->
+<meta name="geo.region" content="VN">
+<meta name="geo.placename" content="Miền Tây, Việt Nam">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="https://i.postimg.cc/Jn5fjMdN/Thi-t-k-ch-a-c-t-n.jpg">
+<link rel="apple-touch-icon" href="https://i.postimg.cc/Jn5fjMdN/Thi-t-k-ch-a-c-t-n.jpg">
+
+<!-- Structured Data / Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Tuấn Taxi - Taxi Xanh Cái Bè",
+  "image": "https://i.postimg.cc/Jn5fjMdN/Thi-t-k-ch-a-c-t-n.jpg",
+  "url": "https://tuantaxi.vercel.app",
+  "telephone": "0365942478",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Cái Bè",
+    "addressRegion": "Tiền Giang",
+    "addressCountry": "VN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 10.4167,
+    "longitude": 105.9500
+  },
+  "openingHours": "Mo,Tu,We,Th,Fr,Sa,Su 00:00-23:59",
+  "priceRange": "$$"
+}
+</script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                fontFamily: {
+                    'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    'space': ['Space Grotesk', 'system-ui', 'sans-serif'],
+                },
+                animation: {
+                    'scroll-left': 'scrollLeft 30s linear infinite',
+                    'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    'fade-in-left': 'fadeInLeft 0.8s ease-out forwards',
+                    'fade-in-right': 'fadeInRight 0.8s ease-out forwards',
+                    'float': 'float 6s ease-in-out infinite',
+                    'scroll-left': 'scrollLeft 20s linear infinite', /* Updated animation */
+                },
+                keyframes: {
+                    scrollLeft: {
+                        '0%': { transform: 'translateX(100%)' },
+                        '100%': { transform: 'translateX(-100%)' }
+                    },
+                    fadeInUp: {
+                        '0%': { opacity: '0', transform: 'translateY(30px)' },
+                        '100%': { opacity: '1', transform: 'translateY(0)' }
+                    },
+                    fadeInLeft: {
+                        '0%': { opacity: '0', transform: 'translateX(-30px)' },
+                        '100%': { opacity: '1', transform: 'translateX(0)' }
+                    },
+                    fadeInRight: {
+                        '0%': { opacity: '0', transform: 'translateX(30px)' },
+                        '100%': { opacity: '1', transform: 'translateX(0)' }
+                    },
+                    float: {
+                        '0%, 100%': { transform: 'translateY(0px)' },
+                        '50%': { transform: 'translateY(-20px)' }
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<style>
+    /* Simplified CSS without variables, default light theme */
+    * {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Inter', system-ui, sans-serif;
+        transition: all 0.3s ease;
+    }
+
+    /* Light theme as default */
+    body {
+        background-color: #ffffff;
+        color: #1a1a1a;
+    }
+
+    body.dark {
+        background-color: #0a0a0a;
+        color: #ffffff;
+    }
+
+    /* Fixed continuous horizontal scrolling */
+    .scroll-banner {
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+    }
+
+    .scroll-content {
+        display: inline-block;
+        animation: scrollLeft 30s linear infinite;
+        padding-left: 100%;
+    }
+
+    /* Glass effects for light theme */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .dark .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark .glass-card:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Improved form styling */
+    .form-input {
+        background: rgba(0, 0, 0, 0.05);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        color: #1a1a1a;
+    }
+
+    .dark .form-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+    }
+
+    .form-input:focus {
+        border-color: #FFD700;
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        background: rgba(255, 215, 0, 0.05);
+    }
+
+    /* Button styles */
+    .btn-primary {
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        color: #1a1a1a;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+    }
+
+    .btn-secondary {
+        background: transparent;
+        border: 2px solid #FFD700;
+        color: #FFD700;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background: #FFD700;
+        color: #1a1a1a;
+        transform: translateY(-2px);
+    }
+
+    /* Navigation */
+    .nav-link {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #FFD700;
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dark .theme-toggle {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .theme-toggle::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        background: #FFD700;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+    }
+
+    .dark .theme-toggle::before {
+        transform: translateX(30px);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .mobile-menu.active {
+        transform: translateX(0);
+    }
+
+    /* Animations */
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease;
+    }
+
+    .fade-in-up.animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .fade-in-left {
+        opacity: 0;
+        transform: translateX(-30px);
+        transition: all 0.8s ease;
+    }
+
+    .fade-in-left.animate {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .fade-in-right {
+        opacity: 0;
+        transform: translateX(30px);
+        transition: all 0.8s ease;
+    }
+
+    .fade-in-right.animate {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Back to top */
+    .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 215, 0, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1000;
+    }
+
+    .back-to-top.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .back-to-top:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .scroll-content {
+            animation-duration: 20s;
+        }
+    }
+
+    /* Updated scrolling animation for continuous banner */
+    @keyframes scrollLeft {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    
+    .animate-scroll-left {
+        animation: scrollLeft 20s linear infinite;
+    }
+</style>
+</head>
+
+<body class="bg-white text-gray-900 transition-all duration-300">
+    <!-- Simplified loading screen -->
+    <div id="loading" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+        <div class="text-center">
+            <div class="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div class="text-yellow-600 font-medium">Đang tải...</div>
+        </div>
+    </div>
+
+    <!-- Refined navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-yellow-400 rounded-xl p-2.5 shadow-lg">
+                        <i data-lucide="car" class="w-6 h-6 text-gray-900"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold font-space tracking-tight text-gray-900">
+                            TUẤN<span class="text-yellow-600">TAXI</span>
+                        </h1>
+                        <p class="text-xs text-gray-500 -mt-0.5">Premium Service</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-sm font-medium text-gray-700 hover:text-yellow-600">Trang Chủ</a>
+                    <a href="#services" class="nav-link text-sm font-medium text-gray-700 hover:text-yellow-600">Dịch Vụ</a>
+                    <a href="#booking" class="nav-link text-sm font-medium text-gray-700 hover:text-yellow-600">Đặt Xe</a>
+                    <a href="#about" class="nav-link text-sm font-medium text-gray-700 hover:text-yellow-600">Về Chúng Tôi</a>
+                    <a href="#contact" class="nav-link text-sm font-medium text-gray-700 hover:text-yellow-600">Liên Hệ</a>
+                </div>
+
+                <!-- Contact & Controls -->
+                <div class="flex items-center space-x-4">
+                    <!-- Remove theme toggle from navigation -->
+                    <!-- <div class="theme-toggle" id="theme-toggle" title="Chuyển đổi giao diện"></div> -->
+                    
+                    <a href="tel:0365942478" class="hidden md:flex items-center space-x-2 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full transition-all border border-yellow-200">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                        <span class="font-medium">0365 942 478</span>
+                    </a>
+                    
+                    <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
+                        <i data-lucide="menu" class="w-6 h-6 text-gray-700"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Improved mobile menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-80 bg-white/95 backdrop-blur-xl z-50 lg:hidden border-l border-gray-200">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-bold font-space text-gray-900">Menu</h2>
+                <button id="close-mobile-menu" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6 text-gray-700"></i>
+                </button>
+            </div>
+            
+            <nav class="space-y-4">
+                <a href="#home" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors mobile-nav-link">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="home" class="w-5 h-5 text-yellow-600"></i>
+                        <span class="text-gray-700">Trang Chủ</span>
+                    </div>
+                </a>
+                <a href="#services" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors mobile-nav-link">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="briefcase" class="w-5 h-5 text-yellow-600"></i>
+                        <span class="text-gray-700">Dịch Vụ</span>
+                    </div>
+                </a>
+                <a href="#booking" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors mobile-nav-link">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="calendar" class="w-5 h-5 text-yellow-600"></i>
+                        <span class="text-gray-700">Đặt Xe</span>
+                    </div>
+                </a>
+                <a href="#about" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors mobile-nav-link">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="info" class="w-5 h-5 text-yellow-600"></i>
+                        <span class="text-gray-700">Về Chúng Tôi</span>
+                    </div>
+                </a>
+                <a href="#contact" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors mobile-nav-link">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="phone" class="w-5 h-5 text-yellow-600"></i>
+                        <span class="text-gray-700">Liên Hệ</span>
+                    </div>
+                </a>
+            </nav>
+
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <a href="tel:0365942478" class="flex items-center justify-center space-x-2 bg-yellow-400 text-gray-900 px-6 py-3 rounded-full font-medium transition-all hover:bg-yellow-500">
+                    <i data-lucide="phone" class="w-5 h-5"></i>
+                    <span> Gọi Ngay</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fixed continuous scrolling banner -->
+    <!-- <div class="fixed top-20 left-0 right-0 z-30 bg-yellow-400 text-gray-900 py-2 scroll-banner">
+        <div class="scroll-content flex items-center space-x-8 text-sm font-medium">
+            <span>🚗 DỊCH VỤ TAXI CHUYÊN NGHIỆP</span>
+            <span>•</span>
+            <span>⭐ CHẤT LƯỢNG DỊCH VỤ HÀNG ĐẦU</span>
+            <span>•</span>
+            <span>🎯 PHỤC VỤ 24/7 KHÔNG NGỪNG NGHỈ</span>
+            <span>•</span>
+            <span>💎 GIÁ CẢ MINH BẠCH VÀ HỢP LÝ</span>
+            <span>•</span>
+            <span>🚀 ĐẶT XE NHANH CHÓNG TIỆN LỢI</span>
+            <span>•</span>
+            <span>🏆 UY TÍN ĐƯỢC KHÁCH HÀNG TIN TƯỞNG</span>
+            <span>•</span>
+        </div>
+    </div> -->
+    <!-- Updated continuous scrolling banner with taxi-related content -->
+    <div class="fixed top-20 left-0 right-0 z-30 bg-yellow-400 text-gray-900 py-3 overflow-hidden">
+        <div class="animate-scroll-left whitespace-nowrap">
+            <div class="inline-flex items-center space-x-8">
+                <span class="text-lg font-bold">DỊCH VỤ TAXI CHUYÊN NGHIỆP</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">CHẤT LƯỢNG DỊCH VỤ HÀNG ĐẦU</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">PHỤC VỤ 24/7 KHÔNG NGỪNG NGHỈ</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">GIÁ CẢ MINH BẠCH VÀ HỢP LÝ</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">ĐẶT XE NHANH CHÓNG TIỆN LỢI</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">UY TÍN ĐƯỢC KHÁCH HÀNG TIN TƯỞNG</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">DỊCH VỤ TAXI CHUYÊN NGHIỆP</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">CHẤT LƯỢNG DỊCH VỤ HÀNG ĐẦU</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">PHỤC VỤ 24/7 KHÔNG NGỪNG NGHỈ</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+                <span class="text-lg font-bold">GIÁ CẢ MINH BẠCH VÀ HỢP LÝ</span>
+                <span class="w-4 h-4 rounded-full bg-gray-900"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Refined hero section -->
+    <!-- <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-32"> -->
+    <!-- Updated hero section with proper spacing for banner -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-40">
+        <!-- Background Elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-yellow-200 rounded-full blur-3xl opacity-30 animate-float"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-yellow-100 rounded-full blur-3xl opacity-20 animate-float" style="animation-delay: -3s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="fade-in-up">
+                <div class="mb-6">
+                    <span class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium border border-yellow-200">
+                        ✨ Dịch vụ taxi hàng đầu Miền Tây
+                    </span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black font-space mb-6 leading-none text-gray-900">
+                    <span class="block">Dịch vụ taxi</span>
+                    <span class="block bg-gradient-to-r from-yellow-600 to-yellow-500 bg-clip-text text-transparent">hàng đầu</span>
+                    <span class="block text-4xl md:text-5xl lg:text-6xl font-medium mt-2 text-gray-600">Miền Tây</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
+                    Kết nối Sài Gòn - Miền Tây với dịch vụ taxi chuyên nghiệp, 
+                    <span class="text-yellow-600 font-medium">an toàn và tiện lợi 24/7</span>
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+                    <a href="#booking" class="btn-primary px-10 py-5 rounded-full font-semibold text-lg inline-flex items-center space-x-3 shadow-lg">
+                        <i data-lucide="calendar-plus" class="w-6 h-6"></i>
+                        <span>Đặt Xe Ngay</span>
+                    </a>
+                    <a href="tel:0365942478" class="btn-secondary px-10 py-5 rounded-full font-semibold text-lg inline-flex items-center space-x-3">
+                        <i data-lucide="phone-call" class="w-6 h-6"></i>
+                        <span>0365 942 478</span>
+                    </a>
+                </div>
+
+                <!-- Simplified feature highlights without statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="glass-card rounded-2xl p-6 fade-in-up" style="animation-delay: 0.2s;">
+                        <div class="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-yellow-600"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-900">An Toàn Tuyệt Đối</h3>
+                        <p class="text-gray-600 text-sm">Tài xế chuyên nghiệp, xe đời mới</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 fade-in-up" style="animation-delay: 0.4s;">
+                        <div class="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="clock" class="w-6 h-6 text-yellow-600"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-900">Phục Vụ 24/7</h3>
+                        <p class="text-gray-600 text-sm">Sẵn sàng phục vụ mọi lúc</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 fade-in-up" style="animation-delay: 0.6s;">
+                        <div class="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="dollar-sign" class="w-6 h-6 text-yellow-600"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-gray-900">Giá Cả Minh Bạch</h3>
+                        <p class="text-gray-600 text-sm">Không phát sinh chi phí</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="w-6 h-10 border-2 border-yellow-600 rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-yellow-600 rounded-full mt-2 animate-pulse"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 lg:py-32 relative bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-20 fade-in-up">
+                <div class="mb-4">
+                    <span class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium border border-yellow-200">
+                        🚗 Dịch vụ của chúng tôi
+                    </span>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-bold font-space mb-6 text-gray-900">
+                    Đa dạng 
+                    <span class="bg-gradient-to-r from-yellow-600 to-yellow-500 bg-clip-text text-transparent">dịch vụ</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Phù hợp với mọi nhu cầu di chuyển của bạn từ cá nhân đến doanh nghiệp
+                </p>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="service-card glass-card rounded-3xl p-8 fade-in-up group" style="animation-delay: 0.1s;">
+                    <div class="bg-gradient-to-br from-yellow-200 to-yellow-100 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="map-pin" class="w-10 h-10 text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-yellow-600 transition-colors text-gray-900">Taxi Liên Tỉnh</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Dịch vụ taxi liên tỉnh Sài Gòn - Miền Tây, đưa đón tận nơi, 
+                        giá cả hợp lý và minh bạch.
+                    </p>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-yellow-600 rounded-full"></div>
+                            <span>Đưa đón tận nhà</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-yellow-600 rounded-full"></div>
+                            <span>Giá cố định, không phát sinh</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-yellow-600 rounded-full"></div>
+                            <span>Xe đời mới, máy lạnh</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card glass-card rounded-3xl p-8 fade-in-up group" style="animation-delay: 0.2s;">
+                    <div class="bg-gradient-to-br from-blue-200 to-blue-100 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="clock" class="w-10 h-10 text-blue-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-blue-500 transition-colors text-gray-900">Taxi 24/7</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Phục vụ khách hàng 24/7, sẵn sàng đáp ứng mọi nhu cầu 
+                        di chuyển bất kể ngày đêm.
+                    </p>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span>Phục vụ 24/7</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span>Đặt xe nhanh chóng</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span>Tài xế kinh nghiệm</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card glass-card rounded-3xl p-8 fade-in-up group" style="animation-delay: 0.3s;">
+                    <div class="bg-gradient-to-br from-green-200 to-green-100 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="users" class="w-10 h-10 text-green-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-green-500 transition-colors text-gray-900">Taxi Nhóm</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Dịch vụ taxi cho nhóm đông người, xe 7 chỗ, 16 chỗ 
+                        phù hợp cho gia đình và công ty.
+                    </p>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Xe 7-16 chỗ</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Phù hợp nhóm đông</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Giá ưu đãi nhóm</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="service-card glass-card rounded-3xl p-8 fade-in-up group" style="animation-delay: 0.4s;">
+                    <div class="bg-gradient-to-br from-purple-200 to-purple-100 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="plane" class="w-10 h-10 text-purple-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-purple-500 transition-colors text-gray-900">Taxi Sân Bay</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Dịch vụ đưa đón sân bay Tân Sơn Nhất, Cần Thơ 
+                        với giá cố định, không lo tắc đường.
+                    </p>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span>Đón đúng giờ</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span>Theo dõi chuyến bay</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span>Hỗ trợ hành lý</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="service-card glass-card rounded-3xl p-8 fade-in-up group" style="animation-delay: 0.5s;">
+                    <div class="bg-gradient-to-br from-orange-200 to-orange-100 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="calendar-days" class="w-10 h-10 text-orange-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-orange-500 transition-colors text-gray-900">Taxi Theo Tháng</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Dịch vụ taxi theo tháng cho doanh nghiệp và cá nhân, 
+                        tiết kiệm chi phí di chuyển hàng ngày.
+                    </p>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <span>Giá ưu đãi theo tháng</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <span>Tài xế cố định</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <span>Hóa đơn VAT</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="service-card glass-card rounded-3xl p-8 fade-in-up group" style="animation-delay: 0.6s;">
+                    <div class="bg-gradient-to-br from-pink-200 to-pink-100 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="heart" class="w-10 h-10 text-pink-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-pink-500 transition-colors text-gray-900">Taxi Cưới Hỏi</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Dịch vụ taxi cho các dịp đặc biệt như cưới hỏi, 
+                        xe hoa, trang trí theo yêu cầu.
+                    </p>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-pink-500 rounded-full"></div>
+                            <span>Xe hoa trang trí</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-pink-500 rounded-full"></div>
+                            <span>Tài xế lịch sự</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-pink-500 rounded-full"></div>
+                            <span>Giá trọn gói</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <!-- <section id="booking" class="py-20 lg:py-32 relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-yellow-50 to-transparent"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 fade-in-up">
+                <div class="mb-4">
+                    <span class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium border border-yellow-200">
+                        📅 Đặt xe ngay
+                    </span>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-bold font-space mb-6 text-gray-900">
+                    Đặt xe 
+                    <span class="bg-gradient-to-r from-yellow-600 to-yellow-500 bg-clip-text text-transparent">ngay bây giờ</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Điền thông tin bên dưới hoặc gọi trực tiếp hotline để được hỗ trợ nhanh nhất
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- Enhanced Booking Form -->
+                <!-- <div class="glass-card rounded-3xl p-8 lg:p-12 fade-in-left">
+                    <div class="text-center mb-8">
+                        <div class="bg-yellow-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="calendar-plus" class="w-8 h-8 text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Thông Tin Đặt Xe</h3>
+                        <p class="text-gray-500 mt-2">Vui lòng điền đầy đủ thông tin</p>
+                    </div>
+                    
+                    <form class="space-y-6" id="bookingForm">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <i data-lucide="user" class="w-4 h-4 inline mr-2"></i>
+                                    Họ và tên *
+                                </label>
+                                <input type="text" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Nhập họ tên của bạn">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <i data-lucide="phone" class="w-4 h-4 inline mr-2"></i>
+                                    Số điện thoại *
+                                </label>
+                                <input type="tel" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Nhập số điện thoại">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+                                Điểm đón *
+                            </label>
+                            <input type="text" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Nhập địa chỉ điểm đón">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                <i data-lucide="navigation" class="w-4 h-4 inline mr-2"></i>
+                                Điểm đến *
+                            </label>
+                            <input type="text" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Nhập địa chỉ điểm đến">
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <i data-lucide="calendar" class="w-4 h-4 inline mr-2"></i>
+                                    Ngày đi *
+                                </label>
+                                <input type="date" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 focus:outline-none">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <i data-lucide="clock" class="w-4 h-4 inline mr-2"></i>
+                                    Giờ đi *
+                                </label>
+                                <input type="time" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                <i data-lucide="car" class="w-4 h-4 inline mr-2"></i>
+                                Loại xe
+                            </label>
+                            <select class="form-input w-full px-4 py-4 rounded-xl text-gray-900 focus:outline-none">
+                                <option value="4cho">Xe 4 chỗ</option>
+                                <option value="7cho">Xe 7 chỗ</option>
+                                <option value="16cho">Xe 16 chỗ</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                <i data-lucide="message-square" class="w-4 h-4 inline mr-2"></i>
+                                Ghi chú
+                            </label>
+                            <textarea rows="4" class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Ghi chú thêm (nếu có)"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary w-full py-5 rounded-xl text-gray-900 font-semibold text-lg flex items-center justify-center space-x-3 shadow-lg">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                            <span>Gửi Yêu Cầu Đặt Xe</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Enhanced Contact Info -->
+                <div class="space-y-8 fade-in-right">
+                    <!-- Quick Contact -->
+                    <div class="glass-card rounded-3xl p-8">
+                        <div class="text-center mb-8">
+                            <div class="bg-yellow-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="phone-call" class="w-8 h-8 text-yellow-600"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900">Liên Hệ Nhanh</h3>
+                            <p class="text-gray-500 mt-2">Chọn cách liên hệ phù hợp</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <a href="tel:0365942478" class="flex items-center space-x-4 p-6 rounded-2xl bg-gradient-to-r from-yellow-50 to-yellow-100 hover:from-yellow-100 hover:to-yellow-200 transition-all group border border-yellow-200">
+                                <div class="bg-yellow-400 rounded-2xl p-4 group-hover:scale-110 transition-transform shadow-lg">
+                                    <i data-lucide="phone" class="w-6 h-6 text-gray-900"></i>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-yellow-700 text-lg">Hotline 24/7</div>
+                                    <div class="text-2xl font-bold text-gray-900">0365 942 478</div>
+                                </div>
+                            </a>
+
+                            <a href="https://zalo.me/0365942478" target="_blank" class="flex items-center space-x-4 p-6 rounded-2xl bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all group border border-blue-200">
+                                <div class="bg-blue-500 rounded-2xl p-4 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="message-circle" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-blue-600 text-lg">Chat Zalo</div>
+                                    <div class="text-xl text-gray-900">Nhắn tin ngay</div>
+                                </div>
+                            </a>
+
+                            <a href="https://www.facebook.com/taxi.xanh.cai.be" target="_blank" class="flex items-center space-x-4 p-6 rounded-2xl bg-gradient-to-r from-blue-600/10 to-blue-600/5 hover:from-blue-600/20 hover:to-blue-600/10 transition-all group border border-blue-600/20">
+                                <div class="bg-blue-600 rounded-2xl p-4 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="facebook" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-blue-500 text-lg">Facebook</div>
+                                    <div class="text-xl text-gray-900">Taxi Xanh Cái Bè</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Price Info -->
+                    <div class="glass-card rounded-3xl p-8">
+                        <div class="text-center mb-8">
+                            <div class="bg-green-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="dollar-sign" class="w-8 h-8 text-green-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900">Bảng Giá Tham Khảo</h3>
+                            <p class="text-gray-500 mt-2">Giá cả minh bạch, cạnh tranh</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-4 px-6 rounded-xl bg-gray-50 border border-gray-200">
+                                <div>
+                                    <span class="text-gray-700 font-medium">Sài Gòn - Cái Bè</span>
+                                    <div class="text-xs text-gray-500">~70km</div>
+                                </div>
+                                <span class="font-bold text-yellow-600 text-xl">450.000đ</span>
+                            </div>
+                            <div class="flex justify-between items-center py-4 px-6 rounded-xl bg-gray-50 border border-gray-200">
+                                <div>
+                                    <span class="text-gray-700 font-medium">Sài Gòn - Mỹ Tho</span>
+                                    <div class="text-xs text-gray-500">~60km</div>
+                                </div>
+                                <span class="font-bold text-yellow-600 text-xl">400.000đ</span>
+                            </div>
+                            <div class="flex justify-between items-center py-4 px-6 rounded-xl bg-gray-50 border border-gray-200">
+                                <div>
+                                    <span class="text-gray-700 font-medium">Sài Gòn - Cần Thơ</span>
+                                    <div class="text-xs text-gray-500">~170km</div>
+                                </div>
+                                <span class="font-bold text-yellow-600 text-xl">650.000đ</span>
+                            </div>
+                            <div class="flex justify-between items-center py-4 px-6 rounded-xl bg-gray-50 border border-gray-200">
+                                <div>
+                                    <span class="text-gray-700 font-medium">Sài Gòn - An Giang</span>
+                                    <div class="text-xs text-gray-500">~200km</div>
+                                </div>
+                                <span class="font-bold text-yellow-600 text-xl">750.000đ</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-6 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-2xl border border-yellow-200">
+                            <p class="text-sm text-center text-gray-600 flex items-center justify-center">
+                                <i data-lucide="info" class="w-4 h-4 mr-2 text-yellow-600"></i>
+                                Giá có thể thay đổi theo thời gian và khoảng cách cụ thể
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <!-- Updated booking section with improved form and contact popup -->
+    <section id="booking" class="py-20 lg:py-32 relative bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-20 fade-in-up">
+                <div class="mb-4">
+                    <span class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium border border-yellow-200">
+                        📅 Đặt xe ngay
+                    </span>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-bold font-space mb-6 text-gray-900">
+                    Đặt xe 
+                    <span class="bg-gradient-to-r from-yellow-600 to-yellow-500 bg-clip-text text-transparent">ngay bây giờ</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Điền thông tin bên dưới hoặc gọi trực tiếp hotline để được hỗ trợ nhanh nhất
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Enhanced booking form with Gmail field -->
+                <div class="glass-card rounded-3xl p-8 fade-in-left">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <div class="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i data-lucide="calendar-plus" class="w-6 h-6 text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Thông Tin Đặt Xe</h3>
+                    </div>
+                    
+                    <form id="bookingForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i data-lucide="user" class="w-4 h-4 inline mr-2"></i>
+                                    Họ và tên *
+                                </label>
+                                <input type="text" required 
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all bg-white"
+                                    placeholder="Nhập họ tên của bạn">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i data-lucide="phone" class="w-4 h-4 inline mr-2"></i>
+                                    Số điện thoại *
+                                </label>
+                                <input type="tel" required 
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all bg-white"
+                                    placeholder="Nhập số điện thoại">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="mail" class="w-4 h-4 inline mr-2"></i>
+                                Email
+                            </label>
+                            <input type="email" 
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all bg-white"
+                                placeholder="Nhập địa chỉ email của bạn">
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+                                    Điểm đón *
+                                </label>
+                                <input type="text" required 
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all bg-white"
+                                    placeholder="Địa chỉ đón">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i data-lucide="navigation" class="w-4 h-4 inline mr-2"></i>
+                                    Điểm đến *
+                                </label>
+                                <input type="text" required 
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all bg-white"
+                                    placeholder="Địa chỉ đến">
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i data-lucide="calendar" class="w-4 h-4 inline mr-2"></i>
+                                    Ngày đi *
+                                </label>
+                                <input type="date" required 
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i data-lucide="clock" class="w-4 h-4 inline mr-2"></i>
+                                    Giờ đi *
+                                </label>
+                                <input type="time" required 
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all bg-white">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="message-square" class="w-4 h-4 inline mr-2"></i>
+                                Ghi chú
+                            </label>
+                            <textarea rows="3" 
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all bg-white resize-none"
+                                placeholder="Thông tin thêm (số hành khách, yêu cầu đặc biệt...)"></textarea>
+                        </div>
+                        
+                        <button type="submit" 
+                            class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-4 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg">
+                            <i data-lucide="send" class="w-5 h-5 inline mr-2"></i>
+                            Gửi Yêu Cầu Đặt Xe
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Replace second form with contact popup -->
+                <div class="glass-card rounded-3xl p-8 fade-in-right">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <div class="bg-yellow-100 w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i data-lucide="phone-call" class="w-6 h-6 text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Liên Hệ Nhanh</h3>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        Cần hỗ trợ ngay? Chọn cách liên hệ phù hợp với bạn để được tư vấn và đặt xe nhanh chóng.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <button onclick="openContactPopup()" 
+                            class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-4 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center justify-center space-x-3">
+                            <i data-lucide="qr-code" class="w-5 h-5"></i>
+                            <span>Xem QR Code Liên Hệ</span>
+                        </button>
+                        
+                        <a href="tel:0365942478" 
+                            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-4 px-6 rounded-xl transition-all transform hover:scale-105 shadow-sm flex items-center justify-center space-x-3 border border-gray-200">
+                            <i data-lucide="phone" class="w-5 h-5"></i>
+                            <span> Gọi Ngay: 0365 942 478</span>
+                        </a>
+                        
+                        <a href="https://zalo.me/0365942478" target="_blank"
+                            class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold py-4 px-6 rounded-xl transition-all transform hover:scale-105 shadow-sm flex items-center justify-center space-x-3 border border-blue-200">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                            <span>Chat Zalo</span>
+                        </a>
+                        
+                        <a href="https://www.facebook.com/taxi.xanh.cai.be" target="_blank"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg flex items-center justify-center space-x-3">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                            <span>Facebook Messenger</span>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-8 p-6 bg-yellow-50 rounded-2xl border border-yellow-200">
+                        <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                            <i data-lucide="clock" class="w-5 h-5 mr-2 text-yellow-600"></i>
+                            Hotline 24/7
+                        </h4>
+                        <p class="text-2xl font-bold text-yellow-600 mb-2">0365 942 478</p>
+                        <p class="text-sm text-gray-600">Phục vụ không ngừng nghỉ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 lg:py-32 relative bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Content -->
+                <div class="fade-in-left">
+                    <div class="mb-6">
+                        <span class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium border border-yellow-200">
+                            ℹ️ Về chúng tôi
+                        </span>
+                    </div>
+                    
+                    <h2 class="text-4xl md:text-6xl font-bold font-space mb-8 text-gray-900">
+                        Về 
+                        <span class="bg-gradient-to-r from-yellow-600 to-yellow-500 bg-clip-text text-transparent">Tuấn Taxi</span>
+                    </h2>
+                    
+                    <div class="space-y-6 text-lg text-gray-600 leading-relaxed">
+                        <p>
+                            Với nhiều năm kinh nghiệm trong lĩnh vực vận tải hành khách, 
+                            <span class="text-yellow-600 font-semibold">Tuấn Taxi (Taxi Xanh Cái Bè)</span> đã trở thành thương hiệu taxi uy tín hàng đầu 
+                            tại khu vực Miền Tây.
+                        </p>
+                        
+                        <p>
+                            Chúng tôi chuyên cung cấp dịch vụ taxi liên tỉnh Sài Gòn - Miền Tây với 
+                            <span class="text-yellow-600 font-semibold">đội ngũ tài xế chuyên nghiệp</span>, 
+                            xe đời mới, máy lạnh và cam kết phục vụ khách hàng 24/7.
+                        </p>
+                        
+                        <p>
+                            Sứ mệnh của chúng tôi là mang đến cho khách hàng những chuyến đi 
+                            <span class="text-yellow-600 font-semibold">an toàn, tiện lợi và tiết kiệm</span>, 
+                            kết nối mọi người với những điểm đến yêu thích trong khu vực Miền Tây.
+                        </p>
+                    </div>
+
+                    <!-- Enhanced Features -->
+                    <div class="grid md:grid-cols-2 gap-6 mt-12">
+                        <div class="flex items-center space-x-4 p-4 rounded-xl bg-white border border-gray-200">
+                            <div class="bg-yellow-100 rounded-full p-3">
+                                <i data-lucide="shield-check" class="w-6 h-6 text-yellow-600"></i>
+                            </div>
+                            <span class="font-medium text-gray-900">An toàn tuyệt đối</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-4 rounded-xl bg-white border border-gray-200">
+                            <div class="bg-yellow-100 rounded-full p-3">
+                                <i data-lucide="clock" class="w-6 h-6 text-yellow-600"></i>
+                            </div>
+                            <span class="font-medium text-gray-900">Đúng giờ cam kết</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-4 rounded-xl bg-white border border-gray-200">
+                            <div class="bg-yellow-100 rounded-full p-3">
+                                <i data-lucide="dollar-sign" class="w-6 h-6 text-yellow-600"></i>
+                            </div>
+                            <span class="font-medium text-gray-900">Giá cả minh bạch</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-4 rounded-xl bg-white border border-gray-200">
+                            <div class="bg-yellow-100 rounded-full p-3">
+                                <i data-lucide="headphones" class="w-6 h-6 text-yellow-600"></i>
+                            </div>
+                            <span class="font-medium text-gray-900">Hỗ trợ 24/7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Removed statistics, added commitment section -->
+                <div class="fade-in-right">
+                    <div class="glass-card rounded-3xl p-8 lg:p-12">
+                        <div class="text-center mb-10">
+                            <div class="bg-yellow-100 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                <i data-lucide="award" class="w-10 h-10 text-yellow-600"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold mb-4 text-gray-900">Cam Kết Chất Lượng</h3>
+                            <p class="text-gray-600">Những giá trị cốt lõi của chúng tôi</p>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="p-6 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-2xl border border-yellow-200">
+                                <h4 class="font-bold text-yellow-800 mb-4 text-lg">Cam kết của chúng tôi:</h4>
+                                <ul class="space-y-3 text-sm text-gray-700">
+                                    <li class="flex items-center space-x-3">
+                                        <i data-lucide="check-circle" class="w-5 h-5 text-yellow-600"></i>
+                                        <span>Xe đời mới, máy lạnh, sạch sẽ</span>
+                                    </li>
+                                    <li class="flex items-center space-x-3">
+                                        <i data-lucide="check-circle" class="w-5 h-5 text-yellow-600"></i>
+                                        <span>Tài xế kinh nghiệm, lịch sự</span>
+                                    </li>
+                                    <li class="flex items-center space-x-3">
+                                        <i data-lucide="check-circle" class="w-5 h-5 text-yellow-600"></i>
+                                        <span>Giá cả cạnh tranh, minh bạch</span>
+                                    </li>
+                                    <li class="flex items-center space-x-3">
+                                        <i data-lucide="check-circle" class="w-5 h-5 text-yellow-600"></i>
+                                        <span>Hỗ trợ khách hàng 24/7</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl border border-blue-200">
+                                <h4 class="font-bold text-blue-800 mb-4 text-lg">Khu vực phục vụ:</h4>
+                                <div class="grid grid-cols-2 gap-3 text-sm text-gray-700">
+                                    <div class="flex items-center space-x-2">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-blue-600"></i>
+                                        <span>Sài Gòn - Cái Bè</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-blue-600"></i>
+                                        <span>Sài Gòn - Mỹ Tho</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-blue-600"></i>
+                                        <span>Sài Gòn - Cần Thơ</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-blue-600"></i>
+                                        <span>Sài Gòn - An Giang</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 lg:py-32 relative">
+        <div class="absolute inset-0 bg-gradient-to-t from-yellow-50 to-transparent"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 fade-in-up">
+                <div class="mb-4">
+                    <span class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium border border-yellow-200">
+                        📞 Liên hệ với chúng tôi
+                    </span>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-bold font-space mb-6 text-gray-900">
+                    Liên hệ 
+                    <span class="bg-gradient-to-r from-yellow-600 to-yellow-500 bg-clip-text text-transparent">với chúng tôi</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Sẵn sàng phục vụ bạn 24/7. Hãy liên hệ ngay để được tư vấn và đặt xe
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Enhanced Contact Cards -->
+                <div class="lg:col-span-1 space-y-6">
+                    <!-- Phone -->
+                    <div class="glass-card rounded-3xl p-8 fade-in-left group">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl p-4 group-hover:scale-110 transition-transform shadow-lg">
+                                <i data-lucide="phone" class="w-8 h-8 text-gray-900"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1 text-gray-900">Hotline</h3>
+                                <a href="tel:0365942478" class="text-yellow-600 text-2xl font-bold hover:text-yellow-700 transition-colors">
+                                    0365 942 478
+                                </a>
+                                <p class="text-xs text-gray-500 mt-1">Phục vụ 24/7</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Zalo -->
+                    <div class="glass-card rounded-3xl p-8 fade-in-left group" style="animation-delay: 0.1s;">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="message-circle" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1 text-gray-900">Zalo</h3>
+                                <a href="https://zalo.me/0365942478" target="_blank" class="text-blue-500 text-lg font-medium hover:text-blue-600 transition-colors">
+                                    Chat ngay
+                                </a>
+                                <p class="text-xs text-gray-500 mt-1">Phản hồi nhanh</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Facebook -->
+                    <div class="glass-card rounded-3xl p-8 fade-in-left group" style="animation-delay: 0.2s;">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="facebook" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1 text-gray-900">Facebook</h3>
+                                <a href="https://www.facebook.com/taxi.xanh.cai.be" target="_blank" class="text-blue-500 text-lg font-medium hover:text-blue-600 transition-colors">
+                                    Taxi Xanh Cái Bè
+                                </a>
+                                <p class="text-xs text-gray-500 mt-1">Theo dõi tin tức</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="glass-card rounded-3xl p-8 fade-in-left group" style="animation-delay: 0.3s;">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="map-pin" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1 text-gray-900">Khu vực phục vụ</h3>
+                                <p class="text-gray-700 text-lg">Sài Gòn - Miền Tây</p>
+                                <p class="text-xs text-gray-500 mt-1">Toàn khu vực</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Contact Form -->
+                <div class="lg:col-span-2 glass-card rounded-3xl p-8 lg:p-12 fade-in-right">
+                    <div class="text-center mb-10">
+                        <div class="bg-yellow-100 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i data-lucide="mail" class="w-10 h-10 text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 text-gray-900">Gửi Tin Nhắn Cho Chúng Tôi</h3>
+                        <p class="text-gray-500">Chúng tôi sẽ phản hồi trong thời gian sớm nhất</p>
+                    </div>
+                    
+                    <form class="space-y-6" id="contactForm">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <i data-lucide="user" class="w-4 h-4 inline mr-2"></i>
+                                    Họ và tên *
+                                </label>
+                                <input type="text" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Nhập họ tên">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    <i data-lucide="phone" class="w-4 h-4 inline mr-2"></i>
+                                    Số điện thoại *
+                                </label>
+                                <input type="tel" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Nhập số điện thoại">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                <i data-lucide="mail" class="w-4 h-4 inline mr-2"></i>
+                                Email
+                            </label>
+                            <input type="email" class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Nhập email (không bắt buộc)">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                <i data-lucide="tag" class="w-4 h-4 inline mr-2"></i>
+                                Chủ đề
+                            </label>
+                            <select class="form-input w-full px-4 py-4 rounded-xl text-gray-900 focus:outline-none">
+                                <option value="booking">Đặt xe</option>
+                                <option value="price">Hỏi giá</option>
+                                <option value="complaint">Góp ý</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                <i data-lucide="message-square" class="w-4 h-4 inline mr-2"></i>
+                                Tin nhắn *
+                            </label>
+                            <textarea rows="6" required class="form-input w-full px-4 py-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none" placeholder="Nhập tin nhắn của bạn..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary w-full py-5 rounded-xl text-gray-900 font-semibold text-lg flex items-center justify-center space-x-3 shadow-lg">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                            <span>Gửi Tin Nhắn</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- Company Info -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center space-x-4 mb-8">
+                        <div class="bg-yellow-400 rounded-2xl p-3 shadow-lg">
+                            <i data-lucide="car" class="w-8 h-8 text-gray-900"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold font-space tracking-tight text-gray-100">
+                                TUẤN<span class="text-yellow-400">TAXI</span>
+                            </h1>
+                            <p class="text-sm text-gray-400">Premium Taxi Service</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 mb-8 leading-relaxed text-lg">
+                        Dịch vụ taxi liên tỉnh Sài Gòn - Miền Tây uy tín, chuyên nghiệp. 
+                        Phục vụ 24/7 với đội ngũ tài xế kinh nghiệm và xe đời mới.
+                    </p>
+                    
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/taxi.xanh.cai.be" target="_blank" class="bg-white/5 hover:bg-yellow-400/20 p-4 rounded-2xl transition-all group">
+                            <i data-lucide="facebook" class="w-6 h-6 text-yellow-400 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://zalo.me/0365942478" target="_blank" class="bg-white/5 hover:bg-yellow-400/20 p-4 rounded-2xl transition-all group">
+                            <i data-lucide="message-circle" class="w-6 h-6 text-yellow-400 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="tel:0365942478" class="bg-white/5 hover:bg-yellow-400/20 p-4 rounded-2xl transition-all group">
+                            <i data-lucide="phone" class="w-6 h-6 text-yellow-400 group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-bold text-xl mb-8 text-gray-100">Liên Kết Nhanh</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#home" class="text-gray-300 hover:text-yellow-400 transition-colors flex items-center space-x-2">
+                            <i data-lucide="home" class="w-4 h-4"></i>
+                            <span>Trang Chủ</span>
+                        </a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-yellow-400 transition-colors flex items-center space-x-2">
+                            <i data-lucide="briefcase" class="w-4 h-4"></i>
+                            <span>Dịch Vụ</span>
+                        </a></li>
+                        <li><a href="#booking" class="text-gray-300 hover:text-yellow-400 transition-colors flex items-center space-x-2">
+                            <i data-lucide="calendar" class="w-4 h-4"></i>
+                            <span>Đặt Xe</span>
+                        </a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-yellow-400 transition-colors flex items-center space-x-2">
+                            <i data-lucide="info" class="w-4 h-4"></i>
+                            <span>Về Chúng Tôi</span>
+                        </a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-yellow-400 transition-colors flex items-center space-x-2">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                            <span>Liên Hệ</span>
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="font-bold text-xl mb-8 text-gray-100">Thông Tin Liên Hệ</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center space-x-3">
+                            <div class="bg-yellow-400/10 rounded-full p-2">
+                                <i data-lucide="phone" class="w-4 h-4 text-yellow-400"></i>
+                            </div>
+                            <a href="tel:0365942478" class="text-gray-300 hover:text-yellow-400 transition-colors">0365 942 478</a>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="bg-yellow-400/10 rounded-full p-2">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-yellow-400"></i>
+                            </div>
+                            <span class="text-gray-300">Khu vực Miền Tây</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="bg-yellow-400/10 rounded-full p-2">
+                                <i data-lucide="clock" class="w-4 h-4 text-yellow-400"></i>
+                            </div>
+                            <span class="text-gray-300">24/7 - Phục vụ không ngừng</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="bg-yellow-400/10 rounded-full p-2">
+                                <i data-lucide="mail" class="w-4 h-4 text-yellow-400"></i>
+                            </div>
+                            <span class="text-gray-300">tuantaxi@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-16 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <p class="text-gray-400 text-center md:text-left">
+                        © 2024 Tuấn Taxi - Taxi Xanh Cái Bè. Tất cả quyền được bảo lưu.
+                    </p>
+                    <div class="flex items-center space-x-6 text-sm text-gray-400">
+                        <a href="#" class="hover:text-yellow-400 transition-colors">Chính sách bảo mật</a>
+                        <a href="#" class="hover:text-yellow-400 transition-colors">Điều khoản sử dụng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i data-lucide="arrow-up" class="w-6 h-6 text-gray-900"></i>
+    </div>
+
+    <!-- Add contact popup modal -->
+    <div id="contactPopup" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeContactPopup()"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <div class="text-center">
+                <div class="bg-yellow-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="qr-code" class="w-8 h-8 text-yellow-600"></i>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Liên Hệ Trực Tiếp</h3>
+                
+                <div class="bg-gray-100 p-6 rounded-2xl mb-6">
+                    <div class="w-32 h-32 bg-white rounded-xl mx-auto mb-4 flex items-center justify-center border-2 border-gray-200">
+                        <div class="text-xs text-gray-500 text-center">
+                            QR Code<br>
+                            Zalo/Phone<br>
+                            0365942478
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600">Quét mã QR để liên hệ nhanh</p>
+                </div>
+                
+                <div class="space-y-3">
+                    <a href="tel:0365942478" 
+                        class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center space-x-2">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                        <span> Gọi Ngay</span>
+                    </a>
+                    
+                    <a href="https://zalo.me/0365942478" target="_blank"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center space-x-2">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        <span>Chat Zalo</span>
+                    </a>
+                </div>
+                
+                <button onclick="closeContactPopup()" 
+                    class="mt-6 text-gray-500 hover:text-gray-700 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Loading screen
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 1000);
+
+            // Theme toggle - REMOVED
+            // const themeToggle = document.getElementById('theme-toggle');
+            // const body = document.body;
+            
+            // themeToggle.addEventListener('click', () => {
+            //     body.classList.toggle('dark');
+            // });
+
+            // Mobile menu
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+            });
+
+            closeMobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+
+            // Intersection Observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Back to top button
+            const backToTop = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Form submissions
+            const bookingForm = document.getElementById('bookingForm');
+            const contactForm = document.getElementById('contactForm'); // Added contactForm
+
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Cảm ơn bạn đã đặt xe! Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.');
+                });
+            }
+
+            if (contactForm) { // Added handler for contactForm
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.');
+                });
+            }
+
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+
+        function openContactPopup() {
+            document.getElementById('contactPopup').classList.remove('hidden');
+        }
+
+        function closeContactPopup() {
+            document.getElementById('contactPopup').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

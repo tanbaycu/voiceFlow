@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xem trước bản nhận dạng</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  </head>
+  <body>
+    <main class="container">
+      <h1>Xem trước văn bản tiếng Anh</h1>
+      <audio controls src="{{ audio_path }}"></audio>
+
+      <details open>
+        <summary>Văn bản tiếng Anh</summary>
+        <pre style="white-space: pre-wrap">{{ en_text }}</pre>
+      </details>
+
+      <form action="/translate" method="post">
+        <input type="hidden" name="en_text" value="{{ en_text }}">
+        <input type="hidden" name="audio_rel" value="{{ audio_rel }}">
+        <input type="hidden" name="rec_id" value="{{ rec_id }}">
+        <button type="submit">Dịch sang tiếng Việt</button>
+      </form>
+
+      <p>
+        Tải bản tiếng Anh: <a href="{{ url_for('download_from_db', rec_id=rec_id, kind='en') }}">download</a>
+      </p>
+    </main>
+  </body>
+</html>
