@@ -2,7 +2,10 @@ import argparse
 import os
 import sys
 import time
-from typing import Iterable, List
+from typing import Iterable, List, Dict, Tuple
+
+
+_model_cache: Dict[Tuple[str, str, str], object] = {}
 
 
 def _ensure_dependencies() -> None:
@@ -22,6 +25,19 @@ def _ensure_dependencies() -> None:
         raise
 
 
+def _get_model(model_size: str, device: str, compute_type: str):
+    from faster_whisper import WhisperModel
+
+    key = (model_size, device, compute_type)
+    model = _model_cache.get(key)
+    if model is not None:
+        return model
+
+    model = WhisperModel(model_size, device=device, compute_type=compute_type)
+    _model_cache[key] = model
+    return model
+
+
 def transcribe_audio_to_english(
     audio_path: str,
     model_size: str = "small",
@@ -30,8 +46,6 @@ def transcribe_audio_to_english(
     beam_size: int = 5,
     vad_filter: bool = True,
 ) -> str:
-    from faster_whisper import WhisperModel
-
     if device == "auto":
         try:
             import torch
@@ -43,7 +57,7 @@ def transcribe_audio_to_english(
     if compute_type == "auto":
         compute_type = "float16" if device == "cuda" else "int8"
 
-    model = WhisperModel(model_size, device=device, compute_type=compute_type)
+    model = _get_model(model_size, device, compute_type)
 
     segments, info = model.transcribe(
         audio_path,

@@ -1,13 +1,12 @@
 import os
 import uuid
-from flask import Flask, render_template, request, redirect, url_for, send_file, flash, Response
+import tempfile
+from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 
 from transcribe_translate import (
     transcribe_audio_to_english,
     translate_en_to_vi,
-    derive_paths,
-    write_text_file,
 )
 
 # ==== DB setup (inline) ====
@@ -56,12 +55,7 @@ def get_session():
 # ===========================
 
 
-UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "outputs")
 ALLOWED_EXTENSIONS = {"mp3", "wav", "m4a", "mp4", "aac", "flac", "ogg"}
-
-os.makedirs(UPLOAD_DIR, exist_ok=True)
-os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Cấu hình nhẹ cho gói Free
 WHISPER_MODEL = os.environ.get("WHISPER_MODEL", "tiny")
@@ -101,47 +95,31 @@ def handle_upload():
         return redirect(url_for("upload_form"))
 
     filename = secure_filename(file.filename)
-    unique_prefix = uuid.uuid4().hex[:8]
-    saved_name = f"{unique_prefix}_{filename}"
-    saved_path = os.path.join(UPLOAD_DIR, saved_name)
-    file.save(saved_path)
+    suffix = "." + filename.rsplit(".", 1)[1].lower()
 
     try:
-        en_text = transcribe_audio_to_english(
-            saved_path,
-            model_size=WHISPER_MODEL,
-            beam_size=1,
-        )
+        with tempfile.NamedTemporaryFile(delete=True, suffix=suffix) as tmp:
+            file.save(tmp.name)
+            en_text = transcribe_audio_to_english(
+                tmp.name,
+                model_size=WHISPER_MODEL,
+                beam_size=1,
+            )
     except Exception as exc:
         flash(f"Lỗi nhận dạng: {exc}")
         return redirect(url_for("upload_form"))
 
-    # Lưu vào DB
-    session = get_session()
-    try:
-        rec = Transcript(audio_filename=saved_name, en_text=en_text)
-        session.add(rec)
-        session.commit()
-        rec_id = rec.id
-    finally:
-        session.close()
-
     return render_template(
         "preview.html",
-        audio_path=url_for("download_uploaded", filename=saved_name),
         en_text=en_text,
-        en_txt_rel=f"db:{rec_id}",
-        audio_rel=os.path.basename(saved_path),
-        rec_id=rec_id,
+        vi_text=None,
     )
 
 
 @app.post("/translate")
 def do_translate():
     en_text = request.form.get("en_text", "").strip()
-    audio_rel = request.form.get("audio_rel", "").strip()
-    rec_id = request.form.get("rec_id", "").strip()
-    if not en_text or not audio_rel:
+    if not en_text:
         flash("Thiếu dữ liệu dịch.")
         return redirect(url_for("upload_form"))
 
@@ -151,58 +129,11 @@ def do_translate():
         flash(f"Lỗi dịch: {exc}")
         return redirect(url_for("upload_form"))
 
-    # Cập nhật DB
-    session = get_session()
-    try:
-        if rec_id:
-            rec = session.get(Transcript, int(rec_id))
-            if rec:
-                rec.vi_text = vi_text
-        session.commit()
-    finally:
-        session.close()
-
     return render_template(
-        "result.html",
+        "preview.html",
+        en_text=en_text,
         vi_text=vi_text,
-        vi_txt_rel=f"db:{rec_id}",
-        rec_id=rec_id,
     )
-
-
-@app.get("/uploads/<path:filename>")
-def download_uploaded(filename: str):
-    path = os.path.join(UPLOAD_DIR, filename)
-    return send_file(path, as_attachment=True)
-
-
-@app.get("/outputs/<path:filename>")
-def download_output(filename: str):
-    # Giữ route cũ cho file hệ thống
-    path = os.path.join(OUTPUT_DIR, filename)
-    return send_file(path, as_attachment=True)
-
-
-@app.get("/db/download/<int:rec_id>/<string:kind>")
-def download_from_db(rec_id: int, kind: str):
-    session = get_session()
-    try:
-        rec = session.get(Transcript, rec_id)
-        if not rec:
-            return Response("Not found", status=404)
-        content = rec.en_text if kind == "en" else rec.vi_text
-        if not content:
-            return Response("No content", status=404)
-        filename = f"{rec.audio_filename}.{kind}.txt"
-        return Response(
-            content,
-            headers={
-                "Content-Type": "text/plain; charset=utf-8",
-                "Content-Disposition": f"attachment; filename={filename}",
-            },
-        )
-    finally:
-        session.close()
 
 
 if __name__ == "__main__":
