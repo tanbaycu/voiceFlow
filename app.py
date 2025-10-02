@@ -63,6 +63,10 @@ ALLOWED_EXTENSIONS = {"mp3", "wav", "m4a", "mp4", "aac", "flac", "ogg"}
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+# Cấu hình nhẹ cho gói Free
+WHISPER_MODEL = os.environ.get("WHISPER_MODEL", "tiny")
+MAX_CONTENT_LENGTH_MB = int(os.environ.get("MAX_CONTENT_LENGTH_MB", "30"))
+
 # Tạo bảng nếu chưa có
 Base.metadata.create_all(bind=engine)
 
@@ -73,6 +77,7 @@ def allowed_file(filename: str) -> bool:
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key")
+app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH_MB * 1024 * 1024
 
 
 @app.get("/")
@@ -102,7 +107,11 @@ def handle_upload():
     file.save(saved_path)
 
     try:
-        en_text = transcribe_audio_to_english(saved_path, model_size="small")
+        en_text = transcribe_audio_to_english(
+            saved_path,
+            model_size=WHISPER_MODEL,
+            beam_size=1,
+        )
     except Exception as exc:
         flash(f"Lỗi nhận dạng: {exc}")
         return redirect(url_for("upload_form"))
