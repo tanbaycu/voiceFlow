@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceFlow - Chuyển đổi giọng nói</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #495057;
+            --text-tertiary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-color: #1a1a1a;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.12);
+            --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-green: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-orange: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        html.dark {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8b8;
+            --text-tertiary: #909090;
+            --border-color: #333333;
+            --accent-color: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-lg: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        html.dark .header {
+            background: rgba(15, 15, 15, 0.85);
+        }
+
+        .upload-container {
+            position: relative;
+            padding: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);
+            border-radius: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .upload-container:hover {
+            /* Removed translateY effect */
+            box-shadow: 0 20px 60px var(--shadow-lg);
+        }
+
+        .upload-zone {
+            background: var(--bg-primary);
+            border-radius: calc(2rem - 3px);
+            padding: 4rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Removed shimmer animation on hover */
+
+        .upload-zone.drag-over {
+            background: var(--bg-secondary);
+            transform: scale(0.98);
+        }
+
+        .progress-container {
+            position: relative;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 999px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        /* Removed shimmer animation on progress bar */
+
+        .result-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--text-secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .result-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .result-card:hover {
+            /* Removed translateY effect */
+            box-shadow: 0 12px 40px var(--shadow-lg);
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-color);
+            /* Removed translateY effect, kept only shadow */
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .icon-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Added green background for success state */
+        .icon-btn.success {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
+            border-color: #43e97b !important;
+        }
+
+        .icon-btn.success i {
+            color: white !important;
+        }
+
+        .word {
+            display: inline;
+            transition: all 0.2s ease;
+            padding: 2px 0;
+        }
+
+        .word.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        html.dark .word.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--bg-tertiary);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite !important;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Added subtle pulse animation for loading state */
+        .loading-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Removed pulse animation */
+
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9998;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease;
+        }
+
+        .tutorial-highlight {
+            position: relative;
+            z-index: 9999 !important;
+            box-shadow: 0 0 0 4px #667eea, 0 0 0 9999px rgba(0, 0, 0, 0.85) !important;
+            border-radius: 1.5rem;
+            /* Removed pulse animation */
+            pointer-events: none;
+        }
+
+        .tutorial-tooltip {
+            position: fixed;
+            background: var(--bg-primary);
+            border: 2px solid #667eea;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 450px;
+            width: calc(100vw - 40px);
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: tooltipSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: auto;
+        }
+
+        @keyframes tooltipSlideIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Added better styling for tutorial step badge */
+        .tutorial-step-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            font-weight: 700;
+            font-size: 0.75rem;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary:hover {
+            /* Removed translateY effect */
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-color);
+            /* Removed translateY effect */
+            transform: translateY(-1px);
+        }
+
+        audio {
+            width: 100%;
+            height: 56px;
+            border-radius: 1rem;
+            filter: grayscale(0.2);
+            transition: filter 0.3s ease;
+        }
+
+        audio:hover {
+            filter: grayscale(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 6px;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Added styles for file action buttons */
+        .file-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            max-width: 250px;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .action-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .action-btn-primary:hover {
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            transform: scale(1.02);
+        }
+
+        .action-btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .action-btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-color);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed top-6 left-6 right-6 z-50">
+        <div class="header max-w-7xl mx-auto px-6 py-4 rounded-2xl flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i data-lucide="mic" class="w-6 h-6 text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight">VoiceFlow</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="themeToggle" class="btn-secondary p-3 rounded-xl" title="Chuyển đổi chế độ">
+                    <i data-lucide="sun" class="w-5 h-5 theme-icon-light"></i>
+                    <i data-lucide="moon" class="w-5 h-5 theme-icon-dark hidden"></i>
+                </button>
+                <button onclick="startTutorial()" class="btn-secondary px-5 py-3 rounded-xl text-sm font-semibold flex items-center gap-2">
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                    Hướng dẫn
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 pt-32 pb-16">
+        <div class="text-center mb-20">
+            <div class="inline-flex items-center gap-2 px-4 py-2 text-white rounded-full text-sm font-semibold mb-6" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                Powered by AI
+            </div>
+            <h2 class="text-6xl md:text-7xl font-black mb-6 leading-tight tracking-tight">
+                Chuyển đổi giọng nói<br>
+                <span class="bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">thành văn bản</span>
+            </h2>
+            <p class="text-xl md:text-2xl font-medium" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto;">
+                Nhận dạng âm thanh tiếng Anh và dịch sang tiếng Việt với công nghệ AI tiên tiến
+            </p>
+        </div>
+
+        <div class="max-w-4xl mx-auto mb-20" id="upload-step">
+            <div class="upload-container">
+                <!-- Added pointer-events to prevent double click -->
+                <div id="uploadZone" class="upload-zone text-center" style="pointer-events: auto;">
+                    <div class="relative z-10" style="pointer-events: none;">
+                        <div class="inline-flex p-6 rounded-3xl mb-6" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i data-lucide="cloud-upload" class="w-16 h-16 text-white"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-3">Kéo thả file hoặc nhấn để chọn</h3>
+                        <p class="text-lg mb-8" style="color: var(--text-secondary);">Hỗ trợ: MP3, WAV, M4A, MP4, AAC, FLAC, OGG</p>
+                        <input type="file" id="audioInput" accept=".mp3,.wav,.m4a,.mp4,.aac,.flac,.ogg" class="hidden">
+                        <!-- Changed to use uploadZone click instead of direct button click -->
+                        <button class="btn-primary px-10 py-5 rounded-2xl font-bold text-lg inline-flex items-center gap-3 relative z-10" style="pointer-events: none;">
+                            <i data-lucide="file-audio" class="w-6 h-6"></i>
+                            Chọn file âm thanh
+                        </button>
+                    </div>
+                </div>
+            </div>
+             <!-- Added file action buttons section -->
+            <div id="fileActions" class="hidden mt-8">
+                <div class="file-actions">
+                    <button id="retryBtn" class="action-btn action-btn-primary">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                        Thử lại
+                    </button>
+                    <button id="newFileBtn" class="action-btn action-btn-secondary">
+                        <i data-lucide="file-plus" class="w-5 h-5"></i>
+                        Chọn file khác
+                    </button>
+                </div>
+            </div>
+            <div id="fileName" class="mt-6 text-center hidden">
+                <div class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-white"></i>
+                    <span class="font-semibold text-white" id="fileNameText"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingSection" class="hidden max-w-3xl mx-auto mb-20">
+            <div class="result-card text-center">
+                 <!-- Added loading-pulse class for subtle animation -->
+                <div class="loading-spinner mx-auto mb-8 loading-pulse"></div>
+                <h3 class="text-2xl font-bold mb-4" id="loadingTitle">Đang xử lý...</h3>
+                <!-- Added loading-pulse class for subtle animation -->
+                <p class="text-lg mb-8 loading-pulse" style="color: var(--text-secondary);" id="loadingText">Vui lòng đợi trong giây lát</p>
+                
+                <div class="space-y-4">
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-sm font-medium" style="color: var(--text-secondary);">
+                        <span id="progressPercent">0%</span>
+                        <span id="progressStatus">Đang tải lên...</span>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center justify-center gap-3 pt-4" id="fileStats">
+                        <div class="stat-badge">
+                            <i data-lucide="file" class="w-4 h-4"></i>
+                            <span id="fileSize">0 MB</span>
+                        </div>
+                        <div class="stat-badge">
+                            <i data-lucide="clock" class="w-4 h-4"></i>
+                            <span id="uploadTime">0s</span>
+                        </div>
+                        <div class="stat-badge">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                            <span id="uploadSpeed">0 MB/s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultsSection" class="hidden max-w-6xl mx-auto space-y-8 fade-in">
+            <div id="audio-step" class="result-card">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 rounded-2xl" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i data-lucide="music" class="w-7 h-7 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold">File âm thanh</h3>
+                        <p class="text-sm" style="color: var(--text-secondary);">Nghe lại file đã tải lên</p>
+                    </div>
+                </div>
+                <audio id="audioPlayer" controls></audio>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div id="transcription-step" class="md:col-span-2 result-card">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 rounded-2xl" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <i data-lucide="file-text" class="w-7 h-7 text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold">Văn bản tiếng Anh</h3>
+                                <p class="text-sm" style="color: var(--text-secondary);">Kết quả nhận dạng giọng nói</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="copyEnBtn" class="icon-btn" title="Sao chép">
+                                <i data-lucide="copy" class="w-5 h-5"></i>
+                            </button>
+                            <button id="downloadEnBtn" class="icon-btn" title="Tải xuống">
+                                <i data-lucide="download" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="enText" class="leading-relaxed p-6 rounded-2xl text-lg" style="background: var(--bg-secondary); color: var(--text-primary); min-height: 200px;"></div>
+                </div>
+
+                <div id="translate-step" class="result-card flex flex-col justify-center items-center text-center p-8">
+                    <div class="p-4 rounded-3xl mb-6" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                        <i data-lucide="languages" class="w-12 h-12 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Dịch sang tiếng Việt</h3>
+                    <p class="text-sm mb-6" style="color: var(--text-secondary);">Chuyển đổi văn bản sang tiếng Việt</p>
+                    <button id="translateBtn" class="btn-primary w-full px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-2">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        Dịch ngay
+                    </button>
+                </div>
+            </div>
+
+            <div id="viSection" class="hidden result-card">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 rounded-2xl" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                            <i data-lucide="globe" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Bản dịch tiếng Việt</h3>
+                            <p class="text-sm" style="color: var(--text-secondary);">Kết quả dịch tự động</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="copyViBtn" class="icon-btn" title="Sao chép">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </button>
+                        <button id="downloadViBtn" class="icon-btn" title="Tải xuống">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="viText" class="leading-relaxed p-6 rounded-2xl text-lg" style="background: var(--bg-secondary); color: var(--text-primary); min-height: 200px;"></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="tutorialOverlay" class="tutorial-overlay hidden"></div>
+    <div id="tutorialTooltip" class="tutorial-tooltip hidden">
+        <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);">
+                    <i data-lucide="lightbulb" class="w-5 h-5 text-white"></i>
+                </div>
+                <h4 class="text-xl font-bold" id="tutorialTitle">Hướng dẫn</h4>
+            </div>
+            <button onclick="endTutorial()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <div class="mb-4">
+            <!-- Updated step badge with better styling -->
+            <span id="tutorialStep" class="tutorial-step-badge"></span>
+        </div>
+        <p id="tutorialText" class="mb-6 text-base leading-relaxed" style="color: var(--text-secondary);"></p>
+        <div class="flex items-center justify-between gap-3">
+            <button onclick="endTutorial()" class="btn-secondary px-4 py-2 rounded-xl text-sm font-semibold">
+                Bỏ qua
+            </button>
+            <div class="flex gap-2">
+                <button id="tutorialPrev" onclick="prevTutorialStep()" class="btn-secondary px-4 py-2 rounded-xl text-sm font-semibold hidden">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </button>
+                <button id="tutorialNext" onclick="nextTutorialStep()" class="btn-primary px-5 py-2 rounded-xl text-sm font-semibold flex items-center gap-2">
+                    <span id="tutorialNextText">Tiếp theo</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        let currentAudioFilename = '';
+        let currentEnText = '';
+        let enTxtUrl = '';
+        let viTxtUrl = '';
+        let uploadStartTime = 0;
+        let words = [];
+        let wordTimings = [];
+        let currentFile = null;
+        let sessionId = '';
+
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const lightIcon = document.querySelector('.theme-icon-light');
+        const darkIcon = document.querySelector('.theme-icon-dark');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.remove('light', 'dark');
+        html.classList.add(savedTheme);
+        updateThemeIcon();
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.classList.remove('light', 'dark');
+            html.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+            lucide.createIcons();
+        });
+
+        function updateThemeIcon() {
+            if (html.classList.contains('dark')) {
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            } else {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            }
+        }
+
+        const uploadZone = document.getElementById('uploadZone');
+        const audioInput = document.getElementById('audioInput');
+
+        uploadZone.addEventListener('click', (e) => {
+            e.stopPropagation();
+            audioInput.click();
+        });
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('drag-over');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('drag-over');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                audioInput.files = files;
+                handleFileUpload(files[0]);
+            }
+        });
+
+        audioInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+
+        document.getElementById('retryBtn').addEventListener('click', () => {
+            retryProcessing();
+        });
+
+        document.getElementById('newFileBtn').addEventListener('click', () => {
+            // Reload page to start fresh
+            window.location.reload();
+        });
+
+        async function handleFileUpload(file) {
+            currentFile = file;
+            
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            
+            document.getElementById('fileNameText').textContent = file.name;
+            document.getElementById('fileName').classList.remove('hidden');
+            document.getElementById('fileSize').textContent = `${fileSizeMB} MB`;
+
+            document.getElementById('fileActions').classList.add('hidden');
+            document.getElementById('uploadZone').parentElement.classList.remove('hidden');
+            
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('viSection').classList.add('hidden');
+            document.getElementById('loadingSection').classList.remove('hidden');
+            
+            uploadStartTime = Date.now();
+            
+            simulateProgress();
+
+            const formData = new FormData();
+            formData.append('audio', file);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert('Lỗi: ' + data.error);
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    return;
+                }
+
+                updateProgress(100, 'Hoàn thành!');
+                
+                setTimeout(() => {
+                    sessionId = data.session_id;
+                    currentAudioFilename = data.audio_filename;
+                    currentEnText = data.transcription;
+                    enTxtUrl = data.en_txt_url;
+
+                    if (sessionId) {
+                        window.history.pushState({ sessionId }, '', `/${sessionId}`);
+                    }
+
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    audioPlayer.src = data.audio_url;
+                    
+                    prepareTextForSync(data.transcription);
+                    
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                    
+                    document.getElementById('uploadZone').parentElement.classList.add('hidden');
+                    document.getElementById('fileActions').classList.remove('hidden');
+                    
+                    lucide.createIcons();
+                    
+                    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 500);
+
+            } catch (error) {
+                alert('Lỗi kết nối: ' + error.message);
+                document.getElementById('loadingSection').classList.add('hidden');
+            }
+        }
+
+        async function retryProcessing() {
+            if (!sessionId) {
+                alert('Không có phiên làm việc để thử lại');
+                return;
+            }
+
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('viSection').classList.add('hidden');
+            document.getElementById('loadingSection').classList.remove('hidden');
+            
+            uploadStartTime = Date.now();
+            simulateProgress();
+
+            try {
+                const response = await fetch('/retry', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert('Lỗi: ' + data.error);
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                    return;
+                }
+
+                updateProgress(100, 'Hoàn thành!');
+                
+                setTimeout(() => {
+                    currentEnText = data.transcription;
+                    enTxtUrl = data.en_txt_url;
+
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    audioPlayer.src = data.audio_url;
+                    
+                    prepareTextForSync(data.transcription);
+                    
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                    
+                    lucide.createIcons();
+                    
+                    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 500);
+
+            } catch (error) {
+                alert('Lỗi kết nối: ' + error.message);
+                document.getElementById('loadingSection').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+            }
+        }
+
+        function prepareTextForSync(text) {
+            const enTextDiv = document.getElementById('enText');
+            words = text.split(/\s+/);
+            
+            const wrappedText = words.map((word, index) => 
+                `<span class="word" data-index="${index}">${word}</span>`
+            ).join(' ');
+            
+            enTextDiv.innerHTML = wrappedText;
+        }
+
+        document.getElementById('audioPlayer').addEventListener('loadedmetadata', function() {
+            const audio = this;
+            const duration = audio.duration;
+            
+            if (words.length > 0) {
+                const timePerWord = duration / words.length;
+                wordTimings = words.map((_, index) => ({
+                    start: index * timePerWord,
+                    end: (index + 1) * timePerWord
+                }));
+            }
+        });
+
+        document.getElementById('audioPlayer').addEventListener('timeupdate', function() {
+            const currentTime = this.currentTime;
+            
+            wordTimings.forEach((timing, index) => {
+                const wordSpan = document.querySelector(`.word[data-index="${index}"]`);
+                if (wordSpan) {
+                    if (currentTime >= timing.start && currentTime < timing.end) {
+                        wordSpan.classList.add('active');
+                        wordSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+                    } else {
+                        wordSpan.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        document.getElementById('audioPlayer').addEventListener('pause', function() {
+            document.querySelectorAll('.word.active').forEach(word => {
+                word.classList.remove('active');
+            });
+        });
+
+        document.getElementById('audioPlayer').addEventListener('ended', function() {
+            document.querySelectorAll('.word.active').forEach(word => {
+                word.classList.remove('active');
+            });
+        });
+
+        function simulateProgress() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) {
+                    progress = 90;
+                    clearInterval(interval);
+                }
+                updateProgress(progress, progress < 30 ? 'Đang tải lên...' : progress < 70 ? 'Đang nhận dạng giọng nói...' : 'Đang xử lý...');
+            }, 500);
+        }
+
+        function updateProgress(percent, status) {
+            document.getElementById('progressBar').style.width = `${percent}%`;
+            document.getElementById('progressPercent').textContent = `${Math.round(percent)}%`;
+            document.getElementById('progressStatus').textContent = status;
+            
+            const elapsed = ((Date.now() - uploadStartTime) / 1000).toFixed(1);
+            document.getElementById('uploadTime').textContent = `${elapsed}s`;
+            
+            const speed = (parseFloat(document.getElementById('fileSize').textContent) / elapsed).toFixed(2);
+            document.getElementById('uploadSpeed').textContent = `${speed} MB/s`;
+        }
+
+        document.getElementById('translateBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('translateBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> Đang dịch...';
+            lucide.createIcons();
+
+            try {
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        en_text: currentEnText,
+                        audio_filename: currentAudioFilename
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert('Lỗi: ' + data.error);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i data-lucide="arrow-right" class="w-5 h-5"></i> Dịch ngay';
+                    lucide.createIcons();
+                    return;
+                }
+
+                viTxtUrl = data.vi_txt_url;
+
+                document.getElementById('viText').textContent = data.translation;
+                document.getElementById('viSection').classList.remove('hidden');
+
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="refresh-cw" class="w-5 h-5"></i> Dịch lại';
+                lucide.createIcons();
+
+                document.getElementById('viSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (error) {
+                alert('Lỗi kết nối: ' + error.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="arrow-right" class="w-5 h-5"></i> Dịch ngay';
+                lucide.createIcons();
+            }
+        });
+
+        async function copyToClipboard(text, buttonId) {
+            try {
+                await navigator.clipboard.writeText(text);
+                const btn = document.getElementById(buttonId);
+                
+                btn.classList.add('success');
+                
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'check');
+                    lucide.createIcons();
+                    
+                    // Re-query icon after lucide.createIcons() to ensure it updates
+                    setTimeout(() => {
+                        const updatedIcon = btn.querySelector('i');
+                        if (updatedIcon) {
+                            updatedIcon.setAttribute('data-lucide', 'check');
+                        }
+                    }, 50);
+                }
+                
+                setTimeout(() => {
+                    btn.classList.remove('success');
+                    const iconAfter = btn.querySelector('i');
+                    if (iconAfter) {
+                        iconAfter.setAttribute('data-lucide', 'copy');
+                        lucide.createIcons();
+                    }
+                }, 2000);
+            } catch (error) {
+                alert('Không thể sao chép: ' + error.message);
+            }
+        }
+
+        document.getElementById('copyEnBtn').addEventListener('click', () => {
+            copyToClipboard(currentEnText, 'copyEnBtn');
+        });
+
+        document.getElementById('copyViBtn').addEventListener('click', () => {
+            const viText = document.getElementById('viText').textContent;
+            copyToClipboard(viText, 'copyViBtn');
+        });
+
+        document.getElementById('downloadEnBtn').addEventListener('click', () => {
+            if (enTxtUrl) {
+                window.location.href = enTxtUrl;
+            }
+        });
+
+        document.getElementById('downloadViBtn').addEventListener('click', () => {
+            if (viTxtUrl) {
+                window.location.href = viTxtUrl;
+            }
+        });
+
+        const tutorialSteps = [
+            {
+                element: 'upload-step',
+                title: 'Bước 1: Tải file âm thanh',
+                text: 'Bắt đầu bằng cách tải lên file âm thanh của bạn. Bạn có thể kéo thả file vào vùng này hoặc nhấn nút "Chọn file âm thanh". Hệ thống hỗ trợ nhiều định dạng phổ biến như MP3, WAV, M4A và nhiều hơn nữa.',
+                requiresUpload: false,
+                createDemo: false
+            },
+            {
+                element: 'audio-step',
+                title: 'Bước 2: Nghe lại file âm thanh',
+                text: 'Sau khi tải lên thành công, bạn có thể nghe lại file âm thanh gốc để kiểm tra. Hệ thống sẽ tự động nhận dạng giọng nói tiếng Anh trong file của bạn.',
+                requiresUpload: false,
+                createDemo: true
+            },
+            {
+                element: 'transcription-step',
+                title: 'Bước 3: Xem văn bản tiếng Anh',
+                text: 'Văn bản được nhận dạng từ giọng nói sẽ hiển thị ở đây. Bạn có thể sao chép văn bản này hoặc tải xuống dưới dạng file .txt để sử dụng sau. Các từ sẽ được làm nổi bật theo thời gian thực khi phát âm thanh.',
+                requiresUpload: false,
+                createDemo: true
+            },
+            {
+                element: 'translate-step',
+                title: 'Bước 4: Dịch sang tiếng Việt',
+                text: 'Nhấn nút "Dịch ngay" để chuyển đổi văn bản tiếng Anh sang tiếng Việt. Quá trình dịch sẽ diễn ra tự động và nhanh chóng với công nghệ AI.',
+                requiresUpload: false,
+                createDemo: true
+            }
+        ];
+
+        let currentTutorialStep = 0;
+        let tutorialActive = false;
+        let demoCreated = false;
+
+        function createDemoElements() {
+            if (demoCreated || currentAudioFilename) return;
+            
+            const demoText = "Welcome to VoiceFlow! This is a demo transcription to show you how the interface works. You can upload your own audio file to see real results.";
+            
+            document.getElementById('enText').innerHTML = demoText.split(' ').map((word, index) => 
+                `<span class="word" data-index="${index}">${word}</span>`
+            ).join(' ');
+            
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('loadingSection').classList.add('hidden');
+            
+            demoCreated = true;
+            lucide.createIcons();
+        }
+
+        function removeDemoElements() {
+            if (!demoCreated) return;
+            
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('viSection').classList.add('hidden');
+            document.getElementById('enText').innerHTML = '';
+            
+            demoCreated = false;
+        }
+
+        function startTutorial() {
+            currentTutorialStep = 0;
+            tutorialActive = true;
+            
+            const overlay = document.getElementById('tutorialOverlay');
+            overlay.classList.remove('hidden');
+            
+            showTutorialStep();
+        }
+
+        function showTutorialStep() {
+            if (currentTutorialStep >= tutorialSteps.length) {
+                endTutorial();
+                return;
+            }
+
+            const step = tutorialSteps[currentTutorialStep];
+            
+            if (step.createDemo && !currentAudioFilename) {
+                createDemoElements();
+            }
+
+            const element = document.getElementById(step.element);
+            
+            if (!element) {
+                console.log('[v0] Tutorial element not found:', step.element);
+                currentTutorialStep++;
+                showTutorialStep();
+                return;
+            }
+
+            document.querySelectorAll('.tutorial-highlight').forEach(el => {
+                el.classList.remove('tutorial-highlight');
+                el.style.position = '';
+                el.style.zIndex = '';
+            });
+
+            element.classList.add('tutorial-highlight');
+            
+            document.getElementById('tutorialTitle').textContent = step.title;
+            document.getElementById('tutorialText').textContent = step.text;
+            
+            document.getElementById('tutorialStep').textContent = `Bước ${currentTutorialStep + 1}/${tutorialSteps.length}`;
+
+            const prevBtn = document.getElementById('tutorialPrev');
+            if (currentTutorialStep === 0) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+
+            const nextBtn = document.getElementById('tutorialNext');
+            const nextText = document.getElementById('tutorialNextText');
+            const nextIcon = nextBtn.querySelector('i');
+            const isLastStep = currentTutorialStep === tutorialSteps.length - 1;
+            
+            if (nextIcon) {
+                if (isLastStep) {
+                    nextText.textContent = 'Hoàn thành';
+                    nextIcon.setAttribute('data-lucide', 'check');
+                } else {
+                    nextText.textContent = 'Tiếp theo';
+                    nextIcon.setAttribute('data-lucide', 'arrow-right');
+                }
+            }
+
+            const tooltip = document.getElementById('tutorialTooltip');
+            tooltip.classList.remove('hidden');
+            
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                positionTooltip(element, tooltip);
+                lucide.createIcons();
+            }, 300);
+        }
+
+        function positionTooltip(element, tooltip) {
+            const elementRect = element.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            const padding = 20;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            let top, left;
+            
+            const spaceBelow = viewportHeight - elementRect.bottom;
+            const spaceAbove = elementRect.top;
+            const spaceRight = viewportWidth - elementRect.right;
+            const spaceLeft = elementRect.left;
+            
+            if (spaceBelow >= tooltipRect.height + padding) {
+                top = elementRect.bottom + padding;
+                left = elementRect.left + (elementRect.width / 2) - (tooltipRect.width / 2);
+            } else if (spaceAbove >= tooltipRect.height + padding) {
+                top = elementRect.top - tooltipRect.height - padding;
+                left = elementRect.left + (elementRect.width / 2) - (tooltipRect.width / 2);
+            } else if (spaceRight >= tooltipRect.width + padding) {
+                top = elementRect.top + (elementRect.height / 2) - (tooltipRect.height / 2);
+                left = elementRect.right + padding;
+            } else if (spaceLeft >= tooltipRect.width + padding) {
+                top = elementRect.top + (elementRect.height / 2) - (tooltipRect.height / 2);
+                left = elementRect.left - tooltipRect.width - padding;
+            } else {
+                top = (viewportHeight / 2) - (tooltipRect.height / 2);
+                left = (viewportWidth / 2) - (tooltipRect.width / 2);
+            }
+            
+            left = Math.max(padding, Math.min(left, viewportWidth - tooltipRect.width - padding));
+            top = Math.max(padding, Math.min(top, viewportHeight - tooltipRect.height - padding));
+            
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
+            
+            console.log('[v0] Tooltip positioned at:', { top, left });
+        }
+
+        function nextTutorialStep() {
+            currentTutorialStep++;
+            showTutorialStep();
+        }
+
+        function prevTutorialStep() {
+            if (currentTutorialStep > 0) {
+                currentTutorialStep--;
+                showTutorialStep();
+            }
+        }
+
+        function endTutorial() {
+            tutorialActive = false;
+            
+            document.getElementById('tutorialOverlay').classList.add('hidden');
+            document.getElementById('tutorialTooltip').classList.add('hidden');
+            
+            document.querySelectorAll('.tutorial-highlight').forEach(el => {
+                el.classList.remove('tutorial-highlight');
+                el.style.position = '';
+                el.style.zIndex = '';
+            });
+            
+            if (demoCreated && !currentAudioFilename) {
+                removeDemoElements();
+            }
+            
+            currentTutorialStep = 0;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && tutorialActive) {
+                endTutorial();
+            }
+        });
+
+        document.getElementById('tutorialOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'tutorialOverlay') {
+                endTutorial();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const pathParts = window.location.pathname.split('/').filter(p => p);
+            if (pathParts.length > 0) {
+                const potentialSessionId = pathParts[0];
+                // Try to load session data if URL contains a session ID
+                loadSessionFromUrl(potentialSessionId);
+            }
+        });
+
+        async function loadSessionFromUrl(sid) {
+            try {
+                const response = await fetch(`/api/session/${sid}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.session) {
+                        // Restore session state
+                        sessionId = data.session.session_id;
+                        currentAudioFilename = data.session.audio_filename;
+                        currentEnText = data.session.transcription;
+                        
+                        // Show results
+                        document.getElementById('fileNameText').textContent = currentAudioFilename;
+                        document.getElementById('fileName').classList.remove('hidden');
+                        
+                        const audioPlayer = document.getElementById('audioPlayer');
+                        audioPlayer.src = `/uploads/${currentAudioFilename}`;
+                        
+                        prepareTextForSync(currentEnText);
+                        
+                        document.getElementById('resultsSection').classList.remove('hidden');
+                        document.getElementById('uploadZone').parentElement.classList.add('hidden');
+                        document.getElementById('fileActions').classList.remove('hidden');
+                        
+                        // If translation exists, show it
+                        if (data.session.translation) {
+                            document.getElementById('viText').textContent = data.session.translation;
+                            document.getElementById('viSection').classList.remove('hidden');
+                            
+                            const translateBtn = document.getElementById('translateBtn');
+                            translateBtn.innerHTML = '<i data-lucide="refresh-cw" class="w-5 h-5"></i> Dịch lại';
+                        }
+                        
+                        lucide.createIcons();
+                    }
+                }
+            } catch (error) {
+                console.log('[v0] Failed to load session from URL:', error);
+            }
+        }
+    </script>
+</body>
+</html>

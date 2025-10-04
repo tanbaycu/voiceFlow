@@ -1,10 +1,5 @@
+flask>=3.0.0
+werkzeug>=3.0.0
 faster-whisper>=1.0.0
-torch>=2.3.0
-numpy>=1.24.0
-soundfile>=0.12.1
-ffmpeg-python>=0.2.0
-deep-translator>=1.11.4
-Flask>=3.0.0
-SQLAlchemy>=2.0.0
-psycopg2-binary>=2.9.9
-gunicorn>=21.2.0
+deep-translator>=1.11.0
+torch>=2.0.0
