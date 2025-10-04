@@ -171,9 +171,6 @@ python app.py --web
 
 ---
 
-## License
-
-MIT License - Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
 
 ---
 
@@ -187,7 +184,7 @@ Mọi đóng góp đều được hoan nghênh! Vui lòng tạo issue hoặc pul
 
 - GitHub: [@tanbaycu](https://github.com/tanbaycu)
 - Issues: [GitHub Issues](https://github.com/tanbaycu/voiceflow/issues)
-
+- Live Preview: [voiceFlow](https://tanbaycu.github.io/voiceFlow/)
 ---
 
 **Phát triển bởi tanbaycu**
