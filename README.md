@@ -1,84 +1,193 @@
-# Audio Transcription & Translation App
+# VoiceFlow
 
-A Flask-based web application that transcribes English audio to text using Whisper AI and translates it to Vietnamese using Google Translator.
+Ứng dụng web chuyển đổi giọng nói tiếng Anh thành văn bản và dịch sang tiếng Việt, sử dụng Whisper AI và Google Translator.
 
-## Features
+**Tác giả:** [tanbaycu](https://github.com/tanbaycu)
 
-- 🎙️ Audio transcription (English) using Whisper AI
-- 🌐 Translation from English to Vietnamese
-- 📁 Support for multiple audio formats (mp3, wav, m4a, mp4, aac, flac, ogg)
-- 💾 Download transcription and translation as text files
-- 🎨 Modern, responsive web interface
-- ⚡ Fast processing with GPU support (if available)
+---
 
-## Installation
+## Tính Năng
 
-1. Install dependencies:
-\`\`\`bash
+- Nhận dạng giọng nói tiếng Anh với độ chính xác cao (Whisper AI)
+- Dịch tự động sang tiếng Việt (Google Translator)
+- Hỗ trợ nhiều định dạng: MP3, WAV, M4A, MP4, AAC, FLAC, OGG (tối đa 100MB)
+- Đồng bộ âm thanh với văn bản khi phát lại
+- Tải xuống kết quả dưới dạng file TXT
+- Quản lý phiên với URL riêng cho mỗi lần dịch
+- Giao diện responsive, hỗ trợ dark mode
+- Xử lý nhanh với GPU acceleration (tùy chọn)
+- Retry thông minh không cần upload lại
+
+---
+
+## Yêu Cầu Hệ Thống
+
+- Python 3.10+
+- RAM: Tối thiểu 4GB (khuyến nghị 8GB+)
+- Ổ cứng: 2GB trống cho model
+- GPU NVIDIA với CUDA (tùy chọn, để tăng tốc)
+
+---
+
+## Cài Đặt
+
+1. Clone repository:
+```bash
+git clone https://github.com/tanbaycu/voiceflow.git
+cd voiceflow
+```
+
+2. Cài đặt dependencies:
+```bash
 pip install -r requirements.txt
-\`\`\`
+```
 
-2. Create required directories (auto-created on first run):
-\`\`\`
-uploads/  # Uploaded audio files
-outputs/  # Generated text files
-templates/  # HTML templates
-\`\`\`
-
-## Usage
-
-### Web Server Mode
-
-Start the web application:
-\`\`\`bash
+3. Khởi chạy ứng dụng:
+```bash
 python app.py --web
-\`\`\`
+```
 
-Or simply:
-\`\`\`bash
-python app.py
-\`\`\`
+4. Truy cập: `http://127.0.0.1:5000`
 
-Then open your browser to `http://127.0.0.1:5000`
+---
 
-### CLI Mode
+## Sử Dụng
 
-Process audio files directly from command line:
-\`\`\`bash
+### Chế Độ Web
+
+1. Chọn file âm thanh (nhấn nút hoặc kéo thả)
+2. Hệ thống tự động xử lý và hiển thị kết quả
+3. Nghe lại audio với tính năng highlight từ đang phát
+4. Nhấn "Dịch ngay" để chuyển sang tiếng Việt
+5. Copy hoặc download kết quả
+
+### Chế Độ CLI
+
+Xử lý file đơn giản:
+```bash
 python app.py input.mp3
-\`\`\`
+```
 
-With custom options:
-\`\`\`bash
+Với tùy chọn nâng cao:
+```bash
 python app.py input.mp3 --model medium --device cuda --out-en english.txt --out-vi vietnamese.txt
-\`\`\`
+```
 
-## Configuration
+Các tùy chọn:
+- `--model`: Kích thước model (tiny, base, small, medium, large) - mặc định: small
+- `--device`: Thiết bị xử lý (cpu, cuda) - mặc định: cpu
+- `--out-en`: File output tiếng Anh
+- `--out-vi`: File output tiếng Việt
+- `--web`: Khởi chạy web server
 
-Environment variables:
-- `WHISPER_MODEL`: Model size (tiny, base, small, medium, large) - default: small
-- `MAX_CONTENT_LENGTH_MB`: Max upload size in MB - default: 100
-- `FLASK_SECRET_KEY`: Flask secret key - default: dev-secret-key
-- `PORT`: Server port - default: 5000
-- `HOST`: Server host - default: 127.0.0.1
-- `DEBUG`: Debug mode - default: False
+---
 
 ## API Endpoints
 
-- `GET /` - Main web interface
-- `POST /upload` - Upload and transcribe audio
-- `POST /translate` - Translate English text to Vietnamese
-- `GET /uploads/<filename>` - Download uploaded audio
-- `GET /outputs/<filename>` - Download output text files
+### Web Interface
+- `GET /` - Giao diện chính
+- `GET /<session_id>` - Truy cập phiên cụ thể
 
-## Requirements
+### API
+- `POST /upload` - Upload và nhận dạng file
+- `POST /translate` - Dịch văn bản
+- `POST /retry` - Thử lại xử lý
+- `GET /api/session/<session_id>` - Lấy thông tin phiên
+- `GET /uploads/<filename>` - Download file audio
+- `GET /outputs/<filename>` - Download file văn bản
 
-- Python 3.10+
-- Flask 3.0+
-- faster-whisper 1.0+
-- deep-translator 1.11+
-- torch 2.0+ (for GPU acceleration)
+---
+
+## Cấu Trúc Thư Mục
+
+```bash
+voiceflow/
+├── app.py                 # File chính
+├── requirements.txt       # Dependencies
+├── README.md             # Tài liệu
+├── index.html            # Hướng dẫn (GitHub Pages)
+├── templates/
+│   └── index.html        # Template web
+├── uploads/              # File âm thanh (tự động tạo)
+├── outputs/              # File văn bản (tự động tạo)
+└── sessions/             # Session data (tự động tạo)
+```
+
+---
+
+## Công Nghệ
+
+- **Backend:** Flask 3.0+
+- **AI/ML:** Whisper AI (faster-whisper), Google Translator (deep-translator)
+- **Frontend:** HTML5, CSS3, JavaScript, Tailwind CSS, Lucide Icons
+- **Processing:** PyTorch, NumPy
+
+---
+
+## Cấu Hình
+
+Tùy chỉnh qua biến môi trường:
+
+| Biến | Mô Tả | Mặc Định |
+|------|-------|----------|
+| `WHISPER_MODEL` | Kích thước model | `small` |
+| `MAX_CONTENT_LENGTH_MB` | Kích thước file tối đa (MB) | `100` |
+| `PORT` | Cổng server | `5000` |
+| `HOST` | Địa chỉ host | `127.0.0.1` |
+
+Ví dụ:
+```bash
+export WHISPER_MODEL=medium
+export MAX_CONTENT_LENGTH_MB=200
+python app.py --web
+```
+
+---
+
+## Mẹo Sử Dụng
+
+**Tăng tốc độ:**
+- Sử dụng GPU với `--device cuda`
+- Chọn model nhỏ hơn (tiny, base)
+
+**Cải thiện độ chính xác:**
+- Sử dụng file âm thanh chất lượng cao, ít nhiễu
+- Giọng nói rõ ràng
+- Sử dụng model lớn hơn (medium, large)
+
+**Quản lý session:**
+- Mỗi session có URL riêng (ví dụ: `/abc123`)
+- Bookmark URL để quay lại sau
+- Sử dụng "Thử lại" để xử lý lại mà không cần upload lại
+
+---
+
+## Bảo Mật
+
+- Chạy hoàn toàn local, không gửi dữ liệu ra ngoài
+- Không thu thập dữ liệu người dùng
+- File được lưu cục bộ trên máy
+- Bạn có toàn quyền quản lý và xóa dữ liệu
+
+---
 
 ## License
 
-MIT License
+MIT License - Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
+
+---
+
+## Đóng Góp
+
+Mọi đóng góp đều được hoan nghênh! Vui lòng tạo issue hoặc pull request trên GitHub.
+
+---
+
+## Liên Hệ
+
+- GitHub: [@tanbaycu](https://github.com/tanbaycu)
+- Issues: [GitHub Issues](https://github.com/tanbaycu/voiceflow/issues)
+
+---
+
+**Phát triển bởi tanbaycu**

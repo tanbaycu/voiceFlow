@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceFlow - Hướng Dẫn Sử Dụng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .header-bg {
+            background: linear-gradient(to bottom, #4f46e5, #6366f1);
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+        
+        details summary {
+            list-style: none;
+        }
+        
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="header-bg text-white py-16">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-white/10 p-3 rounded-lg">
+                    <i data-lucide="mic" class="w-10 h-10"></i>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-bold">VoiceFlow</h1>
+                    <p class="text-indigo-100 text-sm mt-1">Hướng Dẫn Sử Dụng</p>
+                </div>
+            </div>
+            <p class="text-lg text-indigo-50 max-w-3xl">
+                Ứng dụng chuyển đổi giọng nói tiếng Anh thành văn bản và dịch sang tiếng Việt, 
+                sử dụng Whisper AI và Google Translator.
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 max-w-5xl py-12">
+        
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <i data-lucide="list" class="w-6 h-6 text-indigo-600"></i>
+                Tính Năng
+            </h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-indigo-50 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="mic-2" class="w-5 h-5 text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-1">Nhận Dạng Giọng Nói</h3>
+                            <p class="text-sm text-gray-600">Chuyển đổi file âm thanh tiếng Anh thành văn bản với Whisper AI</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-indigo-50 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="languages" class="w-5 h-5 text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-1">Dịch Tự Động</h3>
+                            <p class="text-sm text-gray-600">Dịch văn bản sang tiếng Việt với Google Translator</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-indigo-50 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="file-audio" class="w-5 h-5 text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-1">Đa Định Dạng</h3>
+                            <p class="text-sm text-gray-600">Hỗ trợ MP3, WAV, M4A, MP4, AAC, FLAC, OGG (tối đa 100MB)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-lg border border-gray-200">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-indigo-50 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="link" class="w-5 h-5 text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-1">Quản Lý Phiên</h3>
+                            <p class="text-sm text-gray-600">Mỗi phiên có URL riêng để dễ dàng quay lại</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <i data-lucide="book-open" class="w-6 h-6 text-indigo-600"></i>
+                Hướng Dẫn Sử Dụng
+            </h2>
+            
+            <div class="space-y-5">
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">
+                                1
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Chọn File Âm Thanh</h3>
+                            <p class="text-gray-600 mb-3">
+                                Nhấn nút "Chọn file âm thanh" hoặc kéo thả file vào vùng upload. 
+                                Hỗ trợ các định dạng MP3, WAV, M4A, MP4, AAC, FLAC, OGG với kích thước tối đa 100MB.
+                            </p>
+                            <div class="bg-blue-50 border-l-4 border-blue-400 p-3 text-sm text-blue-900">
+                                <strong>Mẹo:</strong> Chất lượng âm thanh tốt và giọng nói rõ ràng sẽ cho kết quả chính xác hơn.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">
+                                2
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Theo Dõi Quá Trình Xử Lý</h3>
+                            <p class="text-gray-600 mb-3">
+                                Sau khi chọn file, hệ thống tự động xử lý. Bạn sẽ thấy:
+                            </p>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                                    <span>Icon loading xoay vòng hiển thị quá trình đang diễn ra</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                                    <span>Thanh tiến trình hiển thị phần trăm hoàn thành</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                                    <span>Thông tin chi tiết: kích thước file, thời gian, tốc độ xử lý</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">
+                                3
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Xem Kết Quả</h3>
+                            <p class="text-gray-600 mb-3">
+                                Sau khi xử lý xong, bạn có thể:
+                            </p>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                                    <span>Nghe lại audio với tính năng highlight từ đang phát</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                                    <span>Copy văn bản (icon đổi thành checkmark khi thành công)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                                    <span>Download kết quả dưới dạng file TXT</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                                    <span>Nhấn "Dịch ngay" để chuyển sang tiếng Việt</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">
+                                4
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Quản Lý Phiên</h3>
+                            <p class="text-gray-600 mb-3">
+                                Mỗi lần xử lý tạo một phiên với URL riêng (ví dụ: <code class="bg-gray-100 px-2 py-0.5 rounded text-sm">http://127.0.0.1:5000/abc123</code>).
+                            </p>
+                            <div class="space-y-2 text-sm text-gray-600">
+                                <p><strong>Thử lại:</strong> Xử lý lại file đã upload mà không cần tải lên lại</p>
+                                <p><strong>Chọn file khác:</strong> Reload trang để bắt đầu phiên mới</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <i data-lucide="code" class="w-6 h-6 text-indigo-600"></i>
+                API Endpoints
+            </h2>
+            
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                <div class="space-y-3">
+                    <div class="flex items-start gap-3 text-sm">
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded font-mono text-xs">GET</span>
+                        <code class="text-gray-900 font-mono">/</code>
+                        <span class="text-gray-600">Giao diện chính</span>
+                    </div>
+                    
+                    <div class="flex items-start gap-3 text-sm">
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded font-mono text-xs">GET</span>
+                        <code class="text-gray-900 font-mono">/&lt;session_id&gt;</code>
+                        <span class="text-gray-600">Truy cập phiên cụ thể</span>
+                    </div>
+                    
+                    <div class="flex items-start gap-3 text-sm">
+                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded font-mono text-xs">POST</span>
+                        <code class="text-gray-900 font-mono">/upload</code>
+                        <span class="text-gray-600">Upload và nhận dạng file</span>
+                    </div>
+                    
+                    <div class="flex items-start gap-3 text-sm">
+                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded font-mono text-xs">POST</span>
+                        <code class="text-gray-900 font-mono">/translate</code>
+                        <span class="text-gray-600">Dịch văn bản</span>
+                    </div>
+                    
+                    <div class="flex items-start gap-3 text-sm">
+                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded font-mono text-xs">POST</span>
+                        <code class="text-gray-900 font-mono">/retry</code>
+                        <span class="text-gray-600">Thử lại xử lý</span>
+                    </div>
+                    
+                    <div class="flex items-start gap-3 text-sm">
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded font-mono text-xs">GET</span>
+                        <code class="text-gray-900 font-mono">/api/session/&lt;session_id&gt;</code>
+                        <span class="text-gray-600">Lấy thông tin phiên</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <i data-lucide="alert-circle" class="w-6 h-6 text-indigo-600"></i>
+                Xử Lý Sự Cố
+            </h2>
+            
+            <div class="space-y-3">
+                <details class="bg-white rounded-lg border border-gray-200 p-5">
+                    <summary class="font-semibold text-gray-900 cursor-pointer flex items-center justify-between">
+                        <span>Loading spinner không xoay</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400"></i>
+                    </summary>
+                    <div class="mt-3 text-sm text-gray-600 space-y-1">
+                        <p>Thử các cách sau:</p>
+                        <ul class="list-disc ml-5 space-y-1">
+                            <li>Refresh lại trang (F5)</li>
+                            <li>Xóa cache trình duyệt</li>
+                            <li>Thử trình duyệt khác</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg border border-gray-200 p-5">
+                    <summary class="font-semibold text-gray-900 cursor-pointer flex items-center justify-between">
+                        <span>Lỗi "No audio file provided"</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400"></i>
+                    </summary>
+                    <div class="mt-3 text-sm text-gray-600 space-y-1">
+                        <p>Kiểm tra:</p>
+                        <ul class="list-disc ml-5 space-y-1">
+                            <li>Thư mục <code class="bg-gray-100 px-1 rounded">uploads/</code> có file không</li>
+                            <li>File session trong <code class="bg-gray-100 px-1 rounded">sessions/</code></li>
+                            <li>Thử upload lại thay vì dùng Thử lại</li>
+                        </ul>
+                    </div>
+                </details>
+                
+                <details class="bg-white rounded-lg border border-gray-200 p-5">
+                    <summary class="font-semibold text-gray-900 cursor-pointer flex items-center justify-between">
+                        <span>Kết quả không chính xác</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400"></i>
+                    </summary>
+                    <div class="mt-3 text-sm text-gray-600 space-y-1">
+                        <p>Cải thiện độ chính xác:</p>
+                        <ul class="list-disc ml-5 space-y-1">
+                            <li>Sử dụng file âm thanh chất lượng cao, ít nhiễu</li>
+                            <li>Giọng nói rõ ràng, chuẩn</li>
+                            <li>Thử model lớn hơn trong CLI mode</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-6 h-6 text-indigo-600"></i>
+                Bảo Mật
+            </h2>
+            
+            <div class="bg-indigo-50 rounded-lg border border-indigo-200 p-6">
+                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                        <div>
+                            <p class="font-semibold text-gray-900 mb-1">Chạy Local</p>
+                            <p class="text-gray-600">Không gửi dữ liệu ra ngoài</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                        <div>
+                            <p class="font-semibold text-gray-900 mb-1">Lưu Trữ Cục Bộ</p>
+                            <p class="text-gray-600">File lưu trên máy bạn</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                        <div>
+                            <p class="font-semibold text-gray-900 mb-1">Không Thu Thập</p>
+                            <p class="text-gray-600">Không tracking hay analytics</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                        <div>
+                            <p class="font-semibold text-gray-900 mb-1">Toàn Quyền</p>
+                            <p class="text-gray-600">Bạn quản lý dữ liệu của mình</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-8 mt-16">
+        <div class="container mx-auto px-4 max-w-5xl text-center">
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <i data-lucide="mic" class="w-5 h-5"></i>
+                <span class="text-lg font-semibold text-white">VoiceFlow</span>
+            </div>
+            <p class="text-sm mb-2">
+                Phát triển bởi <a href="https://github.com/tanbaycu" class="text-indigo-400 hover:text-indigo-300" target="_blank">tanbaycu</a>
+            </p>
+            <p class="text-xs text-gray-500">
+                MIT License © 2025 • Chạy local, bảo mật tuyệt đối
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
