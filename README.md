@@ -3,6 +3,9 @@
 Ứng dụng web chuyển đổi giọng nói tiếng Anh thành văn bản và dịch sang tiếng Việt, sử dụng Whisper AI và Google Translator.
 
 **Tác giả:** [tanbaycu](https://github.com/tanbaycu)
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/87e89a71-55e1-4179-a052-d26681fd4436" />
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/f950182a-75fa-4833-8453-fddaa03f8e0a" />
+
 
 ---
 
@@ -145,6 +148,11 @@ python app.py --web
 ---
 
 ## Mẹo Sử Dụng
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/276fb05a-1550-4326-ae0a-71ec4d69c79f" />
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/37d0a3f5-2200-4af6-bcdb-2598784e1ba6" />
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/f990dba7-117a-494a-bebd-632562c5f0ca" />
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/936040b3-d2e4-45c3-91f3-2169fc8596a7" />
+
 
 **Tăng tốc độ:**
 - Sử dụng GPU với `--device cuda`
