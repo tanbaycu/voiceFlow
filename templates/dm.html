@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceFlow - Send Me DM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #495057;
+            --text-tertiary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-color: #1a1a1a;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.12);
+        }
+
+        html.dark {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8b8;
+            --text-tertiary: #909090;
+            --border-color: #333333;
+            --accent-color: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-lg: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        html.dark .header {
+            background: rgba(15, 15, 15, 0.85);
+        }
+
+        .form-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            min-height: 44px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .result-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 640px) {
+            .result-card {
+                padding: 1.5rem;
+                border-radius: 1rem;
+            }
+        }
+
+        .success-card {
+            background: linear-gradient(135deg, rgba(67, 233, 123, 0.1) 0%, rgba(56, 249, 215, 0.1) 100%);
+            border: 1px solid #43e97b;
+        }
+
+        .error-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            border: 1px solid #ff6b6b;
+        }
+
+        footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            padding: 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 7xl;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--text-primary);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .footer-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border-color);
+            opacity: 0.5;
+        }
+
+        @media (max-width: 640px) {
+            footer {
+                padding: 1.5rem 1rem;
+            }
+
+            .footer-content {
+                gap: 1rem;
+            }
+
+            .footer-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .footer-divider {
+                display: none;
+            }
+
+            .result-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed top-6 left-6 right-6 z-50">
+        <div class="header max-w-7xl mx-auto px-6 py-4 rounded-2xl flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i data-lucide="mic" class="w-6 h-6 text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight">VoiceFlow</h1>
+            </div>
+            <button id="themeToggle" class="p-3 rounded-xl transition-all hover:bg-opacity-80" style="background: var(--bg-secondary); border: 1px solid var(--border-color);" title="Chuyển đổi chế độ">
+                <i data-lucide="sun" class="w-5 h-5 theme-icon-light"></i>
+                <i data-lucide="moon" class="w-5 h-5 theme-icon-dark hidden"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-6 pt-32 pb-16">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-black mb-4 leading-tight">
+                Send me DM!
+            </h2>
+            <p class="text-lg md:text-xl" style="color: var(--text-secondary);">
+                Gửi câu hỏi, đề xuất hoặc phản hồi cho tôi
+            </p>
+        </div>
+
+        <div id="formContainer" class="result-card mb-8">
+            <form id="feedbackForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Email <span style="color: #667eea;">*</span></label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="emailInput"
+                        class="form-input w-full" 
+                        placeholder="your@email.com"
+                        required
+                    >
+                    <p class="text-xs" style="color: var(--text-tertiary); margin-top: 0.5rem;">Để tôi có thể liên hệ lại với bạn</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Tiêu đề</label>
+                    <input 
+                        type="text" 
+                        name="subject" 
+                        id="subjectInput"
+                        class="form-input w-full" 
+                        placeholder="Nội dung của bạn..."
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Nội dung <span style="color: #667eea;">*</span></label>
+                    <textarea 
+                        name="message" 
+                        id="messageInput"
+                        class="form-input w-full" 
+                        placeholder="Nhập câu hỏi hoặc phản hồi của bạn..."
+                        rows="8"
+                        required
+                    ></textarea>
+                    <p class="text-xs" style="color: var(--text-tertiary); margin-top: 0.5rem;">Bạn có thể chia sẻ đề xuất, báo cáo lỗi, hoặc bất kỳ phản hồi nào</p>
+                </div>
+
+                <button type="submit" class="btn-primary w-full py-3 rounded-xl font-semibold text-lg flex items-center justify-center gap-2">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                    <span id="btnText">Gửi ngay</span>
+                </button>
+            </form>
+        </div>
+
+        <div id="successContainer" class="hidden result-card success-card text-center">
+            <div class="inline-flex p-4 rounded-2xl mb-4" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <i data-lucide="check-circle" class="w-8 h-8 text-white"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">Cảm ơn bạn!</h3>
+            <p class="mb-6" style="color: var(--text-secondary);">Tôi đã nhận được phản hồi của bạn. Tôi sẽ sớm liên hệ với bạn.</p>
+            <a href="/" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg btn-primary text-decoration-none">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                Quay lại trang chính
+            </a>
+        </div>
+
+        <div id="errorContainer" class="hidden result-card error-card">
+            <div class="flex items-start gap-3">
+                <i data-lucide="alert-circle" class="w-6 h-6" style="color: #ff6b6b; flex-shrink: 0;"></i>
+                <div class="flex-1">
+                    <h3 class="font-bold mb-1" style="color: #ff6b6b;">Có lỗi xảy ra</h3>
+                    <p id="errorMessage" style="color: var(--text-secondary); font-size: 0.875rem;"></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <a href="https://github.com/yourusername/voiceflow" target="_blank" class="footer-link">
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>open in v0</span>
+            </a>
+            <div class="footer-divider"></div>
+            <a href="/" class="footer-link">
+                <i data-lucide="mail" class="w-4 h-4"></i>
+                <span>feedback? send me a dm!</span>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const lightIcon = document.querySelector('.theme-icon-light');
+        const darkIcon = document.querySelector('.theme-icon-dark');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.remove('light', 'dark');
+        html.classList.add(savedTheme);
+        updateThemeIcon();
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.classList.remove('light', 'dark');
+            html.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+            lucide.createIcons();
+        });
+
+        function updateThemeIcon() {
+            if (html.classList.contains('dark')) {
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            } else {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            }
+        }
+
+        // Form submission
+        const feedbackForm = document.getElementById('feedbackForm');
+        const successContainer = document.getElementById('successContainer');
+        const errorContainer = document.getElementById('errorContainer');
+        const errorMessage = document.getElementById('errorMessage');
+        const formContainer = document.getElementById('formContainer');
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const btnText = document.getElementById('btnText');
+
+        feedbackForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('emailInput').value.trim();
+            const subject = document.getElementById('subjectInput').value.trim();
+            const message = document.getElementById('messageInput').value.trim();
+
+            if (!email || !message) {
+                showError('Vui lòng điền các trường bắt buộc (Email và Nội dung)');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            btnText.textContent = 'Đang gửi...';
+
+            try {
+                const response = await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        subject,
+                        message
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Lỗi gửi phản hồi');
+                }
+
+                formContainer.classList.add('hidden');
+                successContainer.classList.remove('hidden');
+                lucide.createIcons();
+
+            } catch (error) {
+                showError(error.message || 'Không thể gửi phản hồi. Vui lòng thử lại.');
+                submitBtn.disabled = false;
+                btnText.textContent = 'Gửi ngay';
+            }
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorContainer.classList.remove('hidden');
+            setTimeout(() => {
+                errorContainer.classList.add('hidden');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

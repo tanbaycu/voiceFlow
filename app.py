@@ -1,4 +1,9 @@
 """
+Copyright (c) 2025 tanbaycu
+This file is part of projects under tanbaycu, and is released for study and
+educational purposes only.
+"""
+"""
 Audio Transcription & Translation Web Application
 Combines Flask web server with Whisper transcription and Google translation
 """
@@ -14,7 +19,10 @@ from datetime import datetime
 
 from flask import Flask, render_template, request, jsonify, send_file
 from werkzeug.utils import secure_filename
-
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from user_agents import parse
 
 # ============================================================================
 # Configuration
@@ -24,6 +32,11 @@ UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "outputs")
 SESSIONS_DIR = os.path.join(os.path.dirname(__file__), "sessions")
 ALLOWED_EXTENSIONS = {"mp3", "wav", "m4a", "mp4", "aac", "flac", "ogg"}
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SENDER_EMAIL = os.getenv("SENDER_EMAIL", "")
+SENDER_PASSWORD = os.getenv("SENDER_PASSWORD", "")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "")
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -240,6 +253,33 @@ def derive_paths(input_audio: str, out_en: str | None, out_vi: str | None) -> tu
     vi_path = out_vi or f"{base}.vi.txt"
     return en_path, vi_path
 
+# ============================================================================
+# Email Functions
+# ============================================================================
+
+def send_email(to_email: str, subject: str, body: str) -> bool:
+    """Send email with feedback notification"""
+    try:
+        if not SENDER_EMAIL or not SENDER_PASSWORD:
+            print("[WARNING] Email not configured. Skipping email send.")
+            return False
+        
+        msg = MIMEMultipart()
+        msg['From'] = SENDER_EMAIL
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        
+        msg.attach(MIMEText(body, 'html'))
+        
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SENDER_EMAIL, SENDER_PASSWORD)
+            server.send_message(msg)
+        
+        return True
+    except Exception as e:
+        print(f"[ERROR] Failed to send email: {e}")
+        return False
 
 # ============================================================================
 # Flask Application
@@ -260,17 +300,29 @@ app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH_MB * 1024 * 1024
 
 @app.get("/")
 def index():
-    """Serve the main HTML page"""
+    """Serve the main HTML page - desktop or mobile version based on user agent"""
+    user_agent = request.headers.get('User-Agent', '')
+    ua = parse(user_agent)
+    is_mobile = ua.is_mobile or ua.is_tablet
+    
+    if is_mobile:
+        return render_template("mobile.html")
     return render_template("index.html")
 
 
 @app.get("/<session_id>")
 def session_view(session_id: str):
-    """Serve the main HTML page with session context"""
+    """Serve the main HTML page with session context - desktop or mobile version"""
     session_data = get_session(session_id)
+    
+    user_agent = request.headers.get('User-Agent', '')
+    ua = parse(user_agent)
+    is_mobile = ua.is_mobile or ua.is_tablet
+    
     if not session_data:
-        return render_template("index.html")
-    return render_template("index.html", session_id=session_id)
+        return render_template("mobile.html" if is_mobile else "index.html")
+    
+    return render_template("mobile.html" if is_mobile else "index.html", session_id=session_id)
 
 
 @app.get("/api/session/<session_id>")
@@ -436,6 +488,109 @@ def download_output(filename: str):
         return jsonify({"error": "File not found"}), 404
     return send_file(path, as_attachment=True)
 
+@app.get("/dm")
+def dm_page():
+    """Serve the feedback/DM page"""
+    return render_template("dm.html")
+
+
+@app.post("/api/feedback")
+def handle_feedback():
+    """Handle feedback submission with dual email notifications"""
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({"success": False, "error": "No data provided"}), 400
+    
+    email = data.get("email", "").strip()
+    subject = data.get("subject", "").strip() or "No Subject"
+    message = data.get("message", "").strip()
+    
+    if not email or not message:
+        return jsonify({"success": False, "error": "Email and message are required"}), 400
+    
+    # Validate email format
+    if "@" not in email or "." not in email:
+        return jsonify({"success": False, "error": "Invalid email format"}), 400
+    
+    user_subject = "Cảm ơn bạn đã gửi phản hồi - VoiceFlow"
+    user_body = f"""
+    <html>
+        <body style="font-family: 'Segoe UI', Arial, sans-serif; color: #333; line-height: 1.6;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2 style="color: #667eea;">Cảm ơn bạn! 🎉</h2>
+                <p>Tôi đã nhận được phản hồi của bạn và rất trân trọng ý kiến của bạn.</p>
+                
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1px; border-radius: 8px; margin: 20px 0;">
+                    <div style="background: white; padding: 15px; border-radius: 7px;">
+                        <p><strong style="color: #667eea;">Tiêu đề:</strong> {subject}</p>
+                        <p><strong style="color: #667eea;">Nội dung:</strong></p>
+                        <p style="white-space: pre-wrap; color: #555;">{message}</p>
+                    </div>
+                </div>
+                
+                <p>Tôi sẽ sớm xem xét và liên hệ với bạn nếu cần thêm thông tin.</p>
+                
+                <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                <p style="font-size: 12px; color: #999; text-align: center;">
+                    VoiceFlow - Voice to Text Conversion Tool<br>
+                    Đây là email tự động. Vui lòng không trả lời email này.
+                </p>
+            </div>
+        </body>
+    </html>
+    """
+    
+    user_email_sent = send_email(email, user_subject, user_body)
+    
+    admin_email = "tranminhtan4953@gmail.com"
+    admin_subject = f"🔔 Phản hồi từ {email} - VoiceFlow"
+    admin_body = f"""
+    <html>
+        <body style="font-family: 'Segoe UI', Arial, sans-serif; color: #333; line-height: 1.6;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2 style="color: #667eea;">📬 Phản hồi mới từ người dùng</h2>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <p><strong>Email:</strong> <a href="mailto:{email}" style="color: #667eea;">{email}</a></p>
+                    <p><strong>Tiêu đề:</strong> {subject}</p>
+                    <p><strong>Thời gian:</strong> {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}</p>
+                </div>
+                
+                <h3 style="color: #667eea; margin-top: 25px;">Nội dung phản hồi:</h3>
+                <div style="background: #fff; border-left: 4px solid #667eea; padding: 15px; margin: 15px 0; border-radius: 4px;">
+                    <p style="white-space: pre-wrap; margin: 0; color: #555;">{message}</p>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                    <p style="margin: 0;"><strong>Email cảm ơn đã được gửi tới người dùng: {('✅' if user_email_sent else '❌')}</strong></p>
+                </div>
+                
+                <p style="margin-top: 30px;">
+                    <a href="mailto:{email}?subject=Re: {subject.replace(' ', '%20')}" style="display: inline-block; background: #667eea; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                        Trả lời
+                    </a>
+                </p>
+                
+                <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                <p style="font-size: 11px; color: #999; text-align: center;">
+                    VoiceFlow Admin Dashboard<br>
+                    Đây là thông báo tự động từ hệ thống.
+                </p>
+            </div>
+        </body>
+    </html>
+    """
+    
+    admin_email_sent = send_email(admin_email, admin_subject, admin_body)
+    
+    return jsonify({
+        "success": True, 
+        "message": "Feedback sent successfully",
+        "user_email_sent": user_email_sent,
+        "admin_email_sent": admin_email_sent
+    }), 200
+
 
 # ============================================================================
 # CLI Interface (Optional)
@@ -508,7 +663,7 @@ if __name__ == "__main__":
     
     if args.web or not args.input:
         port = 5000
-        host = "127.0.0.1"
+        host = "0.0.0.0"  
         debug = False
         
         print(f"Starting web server on {host}:{port}")

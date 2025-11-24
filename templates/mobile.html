@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>VoiceFlow - Chuyển đổi giọng nói</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #495057;
+            --text-tertiary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-color: #667eea;
+            --shadow: rgba(0, 0, 0, 0.06);
+            --shadow-lg: rgba(0, 0, 0, 0.12);
+            --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-blue: linear-gradient(135deg, #667eea 0%, #00d4ff 100%);
+            --gradient-green: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        html.dark {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8b8;
+            --text-tertiary: #909090;
+            --border-color: #2a2a2a;
+            --accent-color: #667eea;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-lg: rgba(0, 0, 0, 0.5);
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 100dvh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        main {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        main::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        main::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        /* Header with glassmorphism */
+        .mobile-header {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px var(--shadow);
+            padding: 1rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            flex-shrink: 0;
+        }
+
+        html.dark .mobile-header {
+            background: rgba(15, 15, 15, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 100%;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 0;
+        }
+
+        .header-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 0.75rem;
+            background: var(--gradient-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .theme-btn:active {
+            transform: scale(0.95);
+            background: var(--bg-tertiary);
+        }
+
+        .help-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .help-btn:active {
+            transform: scale(0.95);
+            background: var(--bg-tertiary);
+        }
+
+        /* Upload zone */
+        .upload-container {
+            position: relative;
+            padding: 2px;
+            background: var(--gradient-purple);
+            border-radius: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin: 0 1rem;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+        }
+
+        .upload-container:active {
+            transform: scale(0.98);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .upload-zone {
+            background: var(--bg-primary);
+            border-radius: calc(1.5rem - 2px);
+            padding: 2.5rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .upload-zone.drag-over {
+            background: var(--bg-secondary);
+            transform: scale(0.98);
+        }
+
+        .icon-lg {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            background: var(--gradient-purple);
+            border-radius: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+        }
+
+        .upload-text-group {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--gradient-purple);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            cursor: pointer;
+            min-height: 52px;
+            font-weight: 700;
+            width: 100%;
+            border-radius: 1.125rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            letter-spacing: -0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            pointer-events: none;
+        }
+
+        .btn-primary:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1.5px solid var(--border-color);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            min-height: 48px;
+            font-weight: 600;
+            width: 100%;
+            border-radius: 1rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.96);
+            background: var(--bg-tertiary);
+            border-color: var(--accent-color);
+        }
+
+        /* Result cards */
+        .result-card {
+            background: var(--bg-primary);
+            border: 1.5px solid var(--border-color);
+            border-radius: 1.25rem;
+            padding: 1.75rem 1.5rem;
+            margin: 0 1rem 1.25rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-purple);
+            opacity: 0.8;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.92);
+            background: var(--bg-tertiary);
+            border-color: var(--accent-color);
+        }
+
+        .icon-btn.success {
+            background: var(--gradient-green) !important;
+            border-color: #43e97b !important;
+        }
+
+        .icon-btn.success i {
+            color: white !important;
+        }
+
+        .text-content {
+            padding: 1.25rem;
+            border-radius: 1rem;
+            background: var(--bg-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            min-height: 100px;
+            max-height: 280px;
+            overflow-y: auto;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            border: 1px solid var(--border-color);
+        }
+
+        /* File actions */
+        .file-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+            padding: 1.25rem;
+            margin: 0 1rem 1.5rem;
+            border-radius: 1.25rem;
+            background: var(--bg-secondary);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 1.125rem 1.25rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            min-height: 52px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: -0.3px;
+        }
+
+        .action-btn-primary {
+            background: var(--gradient-purple);
+            color: white;
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-btn-primary:active {
+            transform: scale(0.96);
+            box-shadow: 0 3px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .action-btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1.5px solid var(--border-color);
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+
+        .action-btn-secondary:active {
+            transform: scale(0.96);
+            background: var(--bg-secondary);
+            border-color: var(--accent-color);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            position: relative;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 1.25rem 0;
+            box-shadow: inset 0 2px 4px var(--shadow);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient-purple);
+            border-radius: 999px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Hero section */
+        .hero-section {
+            text-align: center;
+            padding-top: 1.75rem;
+            padding-bottom: 1rem;
+            background: linear-gradient(180deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+            margin-bottom: 1rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            background: var(--gradient-purple);
+            color: white;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.3px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+        }
+
+        .hero-title {
+            font-size: 1.85rem;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-title-gradient {
+            background: var(--gradient-purple);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin: 0 auto 1rem;
+            max-width: 85%;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--bg-tertiary);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.2);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .loading-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Audio player */
+        audio {
+            width: 100%;
+            height: 56px;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            padding: 1.25rem 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 -4px 12px var(--shadow);
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            border-radius: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: rgba(102, 126, 234, 0.08);
+            border: 1px solid transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .footer-link:active {
+            background: rgba(102, 126, 234, 0.15);
+            transform: scale(0.95);
+            color: var(--accent-color);
+        }
+
+        /* Tutorial styles */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9998;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease;
+        }
+
+        .tutorial-highlight {
+            position: relative;
+            z-index: 9999 !important;
+            box-shadow: 0 0 0 4px #667eea, 0 0 0 9999px rgba(0, 0, 0, 0.85) !important;
+            border-radius: 1.5rem;
+            pointer-events: none;
+        }
+
+        .tutorial-tooltip {
+            position: fixed;
+            background: var(--bg-primary);
+            border: 2px solid #667eea;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            max-width: 85vw;
+            width: auto;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: tooltipSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: auto;
+        }
+
+        @keyframes tooltipSlideIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .tutorial-step-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--gradient-purple);
+            color: white !important;
+            font-weight: 700;
+            font-size: 0.75rem;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.875rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        h2 {
+            font-size: 1.85rem;
+            line-height: 1.2;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced header with glassmorphism and help button -->
+    <header class="mobile-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-icon">
+                    <i data-lucide="mic" class="w-6 h-6 text-white"></i>
+                </div>
+                <h1 class="header-title">VoiceFlow</h1>
+            </div>
+            <div class="header-right">
+                <button id="themeToggle" class="theme-btn" title="Chế độ tối/sáng" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="w-5 h-5 theme-icon-light"></i>
+                    <i data-lucide="moon" class="w-5 h-5 theme-icon-dark hidden"></i>
+                </button>
+                <button id="helpBtn" class="help-btn" title="Hướng dẫn" aria-label="Show tutorial">
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="px-4">
+                <div class="hero-badge">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span>Powered by AI</span>
+                </div>
+                <h2 class="hero-title mb-3">
+                    Chuyển đổi
+                    <span class="hero-title-gradient block">giọng nói</span>
+                </h2>
+                <p class="hero-subtitle">
+                    Nhận dạng tiếng Anh<br>Dịch sang tiếng Việt
+                </p>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="max-w-sm mx-auto mb-4 px-4" id="upload-step">
+            <div class="upload-container">
+                <div id="uploadZone" class="upload-zone">
+                    <div class="upload-text-group">
+                        <div class="icon-lg mb-4">
+                            <i data-lucide="cloud-upload" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="font-bold mb-2">Tải file âm thanh</h3>
+                        <p class="text-xs mb-4" style="color: var(--text-secondary);">
+                            MP3, WAV, M4A, MP4, AAC, FLAC, OGG
+                        </p>
+                        <input type="file" id="audioInput" accept=".mp3,.wav,.m4a,.mp4,.aac,.flac,.ogg">
+                        <button class="btn-primary text-sm" style="pointer-events: none;">
+                            <i data-lucide="file-audio" class="w-4 h-4"></i>
+                            <span>Chọn file</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File name display after selection -->
+            <div id="fileName" class="mt-4 text-center hidden">
+                <div class="inline-flex items-center gap-3 px-6 py-2 rounded-2xl" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-white"></i>
+                    <span class="font-semibold text-white text-sm" id="fileNameText"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading section with progress stats -->
+        <div id="loadingSection" class="hidden max-w-sm mx-auto mb-4 px-4 fade-in">
+            <div class="result-card text-center">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h3 class="font-bold mb-2" id="loadingTitle">Đang xử lý...</h3>
+                <p class="text-sm mb-6 loading-pulse" style="color: var(--text-secondary);" id="loadingText">Vui lòng đợi trong giây lát</p>
+                
+                <div class="space-y-3">
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs font-medium" style="color: var(--text-secondary);">
+                        <span id="progressPercent">0%</span>
+                        <span id="progressStatus">Đang tải lên...</span>
+                    </div>
+                    
+                    <!-- File stats display -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 pt-3" id="fileStats">
+                        <div class="stat-badge">
+                            <i data-lucide="file" class="w-3 h-3"></i>
+                            <span id="fileSize">0 MB</span>
+                        </div>
+                        <div class="stat-badge">
+                            <i data-lucide="clock" class="w-3 h-3"></i>
+                            <span id="uploadTime">0s</span>
+                        </div>
+                        <div class="stat-badge">
+                            <i data-lucide="zap" class="w-3 h-3"></i>
+                            <span id="uploadSpeed">0 MB/s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <!-- Audio Player -->
+            <div class="result-card fade-in">
+                <div class="section-header mb-4">
+                    <div class="flex items-center gap-3 flex-1">
+                        <div style="width: 32px; height: 32px; border-radius: 0.5rem; background: var(--gradient-blue); display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="music" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="section-label">🎵 Âm thanh gốc</p>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audioPlayer" controls></audio>
+            </div>
+
+            <!-- Transcription Section -->
+            <div class="result-card fade-in">
+                <div class="section-header mb-3">
+                    <div class="flex items-center gap-3 flex-1">
+                        <div style="width: 32px; height: 32px; border-radius: 0.5rem; background: var(--gradient-blue); display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="file-text" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="section-label">📝 Văn bản tiếng Anh</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="copyEnBtn" class="icon-btn" title="Sao chép">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                        <button id="downloadEnBtn" class="icon-btn" title="Tải xuống">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="enText" class="text-content"></div>
+            </div>
+
+            <!-- Translation Button Section -->
+            <div class="result-card fade-in">
+                <div class="text-center">
+                    <div style="width: 50px; height: 50px; border-radius: 0.75rem; background: var(--gradient-green); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <i data-lucide="languages" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Dịch sang tiếng Việt</h3>
+                    <p class="text-xs mb-4" style="color: var(--text-secondary);">Chuyển đổi tự động</p>
+                    <button id="translateBtn" class="btn-primary text-sm">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        <span>Dịch ngay</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Translation Result Section -->
+            <div id="viSection" class="hidden result-card fade-in">
+                <div class="section-header mb-3">
+                    <div class="flex items-center gap-3 flex-1">
+                        <div style="width: 32px; height: 32px; border-radius: 0.5rem; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="globe" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="section-label">🌐 Bản dịch tiếng Việt</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="copyViBtn" class="icon-btn" title="Sao chép">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                        <button id="downloadViBtn" class="icon-btn" title="Tải xuống">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="viText" class="text-content"></div>
+            </div>
+
+            <!-- File Actions -->
+            <div class="file-actions">
+                <button id="retryBtn" class="action-btn action-btn-primary">
+                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    <span>Thử lại</span>
+                </button>
+                <button id="newFileBtn" class="action-btn action-btn-secondary">
+                    <i data-lucide="file-plus" class="w-5 h-5"></i>
+                    <span>Chọn file khác</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Extra spacing -->
+        <div style="height: 1rem;"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="View on GitHub">
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>open v0</span>
+            </a>
+            <a href="/dm" target="_blank" class="footer-link" aria-label="Send feedback">
+                <i data-lucide="mail" class="w-4 h-4"></i>
+                <span>send dm</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Tutorial overlay and tooltip -->
+    <div id="tutorialOverlay" class="tutorial-overlay hidden"></div>
+    <div id="tutorialTooltip" class="tutorial-tooltip hidden">
+        <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <div style="width: 32px; height: 32px; border-radius: 0.5rem; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="lightbulb" class="w-4 h-4 text-white"></i>
+                </div>
+                <h4 class="font-bold text-sm" id="tutorialTitle">Hướng dẫn</h4>
+            </div>
+            <button onclick="endTutorial()" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors" aria-label="Close tutorial">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <div class="mb-3">
+            <span id="tutorialStep" class="tutorial-step-badge"></span>
+        </div>
+        <p id="tutorialText" class="mb-4 text-sm leading-relaxed" style="color: var(--text-secondary);"></p>
+        <div class="flex items-center justify-between gap-2">
+            <button onclick="endTutorial()" class="btn-secondary px-3 py-2 rounded text-xs font-semibold">
+                Bỏ qua
+            </button>
+            <div class="flex gap-2">
+                <button id="tutorialPrev" onclick="prevTutorialStep()" class="btn-secondary px-3 py-2 rounded text-xs font-semibold hidden">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </button>
+                <button id="tutorialNext" onclick="nextTutorialStep()" class="btn-primary px-4 py-2 rounded text-xs font-semibold flex items-center gap-2">
+                    <span id="tutorialNextText">Tiếp theo</span>
+                    <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        let currentAudioFilename = '';
+        let currentEnText = '';
+        let currentFile = null;
+        let sessionId = '';
+        let uploadStartTime = 0;
+
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const lightIcon = document.querySelector('.theme-icon-light');
+        const darkIcon = document.querySelector('.theme-icon-dark');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.remove('light', 'dark');
+        html.classList.add(savedTheme);
+        updateThemeIcon();
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.classList.remove('light', 'dark');
+            html.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+            lucide.createIcons();
+        });
+
+        function updateThemeIcon() {
+            if (html.classList.contains('dark')) {
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            } else {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            }
+        }
+
+        const uploadZone = document.getElementById('uploadZone');
+        const audioInput = document.getElementById('audioInput');
+
+        uploadZone.addEventListener('click', (e) => {
+            e.stopPropagation();
+            audioInput.click();
+        });
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('drag-over');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('drag-over');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                audioInput.files = files;
+                handleFileUpload(files[0]);
+            }
+        });
+
+        audioInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+
+        async function handleFileUpload(file) {
+            currentFile = file;
+            
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            
+            document.getElementById('fileNameText').textContent = file.name;
+            document.getElementById('fileName').classList.remove('hidden');
+            document.getElementById('fileSize').textContent = `${fileSizeMB} MB`;
+
+            document.getElementById('uploadZone').parentElement.classList.add('hidden');
+            
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('viSection').classList.add('hidden');
+            document.getElementById('loadingSection').classList.remove('hidden');
+            
+            uploadStartTime = Date.now();
+            
+            simulateProgress();
+
+            const formData = new FormData();
+            formData.append('audio', file);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert('Lỗi: ' + data.error);
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('uploadZone').parentElement.classList.remove('hidden');
+                    return;
+                }
+
+                updateProgress(100, 'Hoàn thành!');
+                
+                setTimeout(() => {
+                    sessionId = data.session_id;
+                    currentAudioFilename = data.audio_filename;
+                    currentEnText = data.transcription;
+
+                    if (sessionId) {
+                        window.history.pushState({ sessionId }, '', `/${sessionId}`);
+                    }
+
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    audioPlayer.src = data.audio_url;
+                    document.getElementById('enText').textContent = data.transcription;
+                    
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                    
+                    document.getElementById('uploadZone').parentElement.classList.add('hidden');
+                    
+                    lucide.createIcons();
+                    
+                    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 500);
+
+            } catch (error) {
+                alert('Lỗi kết nối: ' + error.message);
+                document.getElementById('loadingSection').classList.add('hidden');
+                document.getElementById('uploadZone').parentElement.classList.remove('hidden');
+            }
+        }
+
+        function simulateProgress() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress > 95) progress = 95;
+                updateProgress(progress, 'Đang xử lý...');
+                if (progress > 90) clearInterval(interval);
+            }, 500);
+        }
+
+        function updateProgress(value, status) {
+            const progress = Math.min(value, 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+            document.getElementById('progressStatus').textContent = status;
+
+            const elapsed = Math.floor((Date.now() - uploadStartTime) / 1000);
+            document.getElementById('uploadTime').textContent = elapsed + 's';
+
+            if (elapsed > 0 && currentFile) {
+                const fileSizeMB = currentFile.size / (1024 * 1024);
+                const uploadSpeedMBps = (fileSizeMB / elapsed).toFixed(2);
+                document.getElementById('uploadSpeed').textContent = uploadSpeedMBps + ' MB/s';
+            }
+        }
+
+        document.getElementById('retryBtn').addEventListener('click', async () => {
+            if (!sessionId) {
+                alert('Không có phiên làm việc để thử lại');
+                return;
+            }
+
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('viSection').classList.add('hidden');
+            document.getElementById('loadingSection').classList.remove('hidden');
+            
+            uploadStartTime = Date.now();
+            simulateProgress();
+
+            try {
+                const response = await fetch('/retry', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert('Lỗi: ' + data.error);
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                    return;
+                }
+
+                updateProgress(100, 'Hoàn thành!');
+                
+                setTimeout(() => {
+                    currentEnText = data.transcription;
+                    document.getElementById('enText').textContent = data.transcription;
+                    
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                    document.getElementById('viSection').classList.add('hidden');
+                    
+                    lucide.createIcons();
+                }, 500);
+
+            } catch (error) {
+                alert('Lỗi kết nối: ' + error.message);
+                document.getElementById('loadingSection').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('newFileBtn').addEventListener('click', () => {
+            window.open(window.location.origin, '_blank');
+        });
+
+        document.getElementById('copyEnBtn').addEventListener('click', async () => {
+            const text = document.getElementById('enText').textContent;
+            try {
+                await navigator.clipboard.writeText(text);
+                const btn = document.getElementById('copyEnBtn');
+                btn.classList.add('success');
+                setTimeout(() => btn.classList.remove('success'), 2000);
+            } catch (err) {
+                console.error('Copy failed:', err);
+            }
+        });
+
+        document.getElementById('downloadEnBtn').addEventListener('click', () => {
+            const text = document.getElementById('enText').textContent;
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `transcription_en_${new Date().getTime()}.txt`;
+            link.click();
+        });
+
+        document.getElementById('copyViBtn').addEventListener('click', async () => {
+            const text = document.getElementById('viText').textContent;
+            try {
+                await navigator.clipboard.writeText(text);
+                const btn = document.getElementById('copyViBtn');
+                btn.classList.add('success');
+                setTimeout(() => btn.classList.remove('success'), 2000);
+            } catch (err) {
+                console.error('Copy failed:', err);
+            }
+        });
+
+        document.getElementById('downloadViBtn').addEventListener('click', () => {
+            const text = document.getElementById('viText').textContent;
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `transcription_vi_${new Date().getTime()}.txt`;
+            link.click();
+        });
+
+        document.getElementById('translateBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('translateBtn');
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        en_text: currentEnText,
+                        audio_filename: currentAudioFilename
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert('Lỗi dịch: ' + data.error);
+                    btn.disabled = false;
+                    return;
+                }
+
+                document.getElementById('viText').textContent = data.translation;
+                document.getElementById('viSection').classList.remove('hidden');
+                
+                btn.disabled = false;
+                
+                document.getElementById('viSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                alert('Lỗi kết nối: ' + error.message);
+                btn.disabled = false;
+            }
+        });
+
+        const tutorialSteps = [
+            {
+                element: '#uploadZone',
+                title: 'Bước 1: Tải lên file',
+                text: 'Kéo và thả file âm thanh hoặc nhấn để chọn từ máy tính. Hỗ trợ các định dạng MP3, WAV, M4A, MP4, AAC, FLAC, OGG.'
+            },
+            {
+                element: '#translateBtn',
+                title: 'Bước 2: Dịch sang tiếng Việt',
+                text: 'Sau khi nhận dạng xong, bạn có thể nhấn nút "Dịch ngay" để tự động dịch từ tiếng Anh sang tiếng Việt.'
+            },
+            {
+                element: '#copyEnBtn',
+                title: 'Bước 3: Sao chép kết quả',
+                text: 'Sử dụng nút sao chép để copy văn bản, hoặc nhấn tải xuống để lưu kết quả dưới dạng file.'
+            }
+        ];
+
+        let currentTutorialStep = 0;
+        let isTutorialActive = false;
+
+        document.getElementById('helpBtn').addEventListener('click', startTutorial);
+
+        function startTutorial() {
+            isTutorialActive = true;
+            currentTutorialStep = 0;
+            showTutorialStep(0);
+        }
+
+        function endTutorial() {
+            isTutorialActive = false;
+            document.getElementById('tutorialOverlay').classList.add('hidden');
+            document.getElementById('tutorialTooltip').classList.add('hidden');
+            document.querySelectorAll('.tutorial-highlight').forEach(el => {
+                el.classList.remove('tutorial-highlight');
+            });
+        }
+
+        function nextTutorialStep() {
+            currentTutorialStep++;
+            if (currentTutorialStep >= tutorialSteps.length) {
+                endTutorial();
+            } else {
+                showTutorialStep(currentTutorialStep);
+            }
+        }
+
+        function prevTutorialStep() {
+            currentTutorialStep--;
+            if (currentTutorialStep >= 0) {
+                showTutorialStep(currentTutorialStep);
+            }
+        }
+
+        function showTutorialStep(stepIndex) {
+            const step = tutorialSteps[stepIndex];
+            const element = document.querySelector(step.element);
+
+            if (!element) return;
+
+            document.getElementById('tutorialOverlay').classList.remove('hidden');
+            document.getElementById('tutorialTooltip').classList.remove('hidden');
+
+            document.getElementById('tutorialTitle').textContent = step.title;
+            document.getElementById('tutorialText').textContent = step.text;
+            document.getElementById('tutorialStep').textContent = `${stepIndex + 1}/${tutorialSteps.length}`;
+
+            document.querySelectorAll('.tutorial-highlight').forEach(el => {
+                el.classList.remove('tutorial-highlight');
+            });
+            element.classList.add('tutorial-highlight');
+
+            const tutorialPrev = document.getElementById('tutorialPrev');
+            if (stepIndex > 0) {
+                tutorialPrev.classList.remove('hidden');
+            } else {
+                tutorialPrev.classList.add('hidden');
+            }
+
+            const tutorialNextText = document.getElementById('tutorialNextText');
+            if (stepIndex === tutorialSteps.length - 1) {
+                tutorialNextText.textContent = 'Hoàn thành';
+            } else {
+                tutorialNextText.textContent = 'Tiếp theo';
+            }
+
+            const rect = element.getBoundingClientRect();
+            const tooltip = document.getElementById('tutorialTooltip');
+            let top = rect.bottom + 20;
+            let left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2;
+
+            if (top + tooltip.offsetHeight > window.innerHeight) {
+                top = rect.top - tooltip.offsetHeight - 20;
+            }
+
+            if (left < 10) {
+                left = 10;
+            } else if (left + tooltip.offsetWidth > window.innerWidth - 10) {
+                left = window.innerWidth - tooltip.offsetWidth - 10;
+            }
+
+            tooltip.style.top = top + 'px';
+            tooltip.style.left = left + 'px';
+        }
+    </script>
+</body>
+</html>
